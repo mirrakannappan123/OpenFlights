@@ -1,6 +1,6 @@
 # 225_Final_Project
 
-#Team Contract
+## Team Contract
 Communication
 Team Meetings : All team meetings will be in person at 4th floor grainger every week for 1-2 hours on Wednesday. We will not be recording our meetings.
 Assistance : We will be contacting each other through text messages. We will be expected to respond to each other by the end of the day.
@@ -18,7 +18,7 @@ Deevya Swain
 Mirra Kannappan
 Huiyao Liang
 
-#Project Proposal
+## Project Proposal
 
 ## Leading Question 
     We can learn about the different flight routes between various airports from the OpenFlights
