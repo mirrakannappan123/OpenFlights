@@ -11,11 +11,13 @@ using namespace std;
 int main()
 {   
     Graph temp = Graph();
-
-    std::map<string, std::vector<std::pair<std::string, long double>>> map = temp.routes("/workspaces/inc-chipmunk/routes.dat.txt", "/workspaces/inc-chipmunk/airports-extended.dat.txt");
-    for(auto route: map){
-        for(auto adj: route.second){
-            std::cout << "(" << route.first << ", " << adj.first << ", " << adj.second << " )" << std::endl;
-        }
-    }
+    // string file1 = "/workspaces/225_Final_Project/225_Final_Project/routes.dat.txt";
+    // string file2 = "/workspaces/225_Final_Project/225_Final_Project/airports-extended.dat.txt";
+    // std::map<string, std::vector<std::pair<std::string, long double>>> map = temp.routes(file1, file2);
+    // for(auto route: map){
+    //     for(auto adj: route.second){
+    //         std::cout << "(" << route.first << ", " << adj.first << ", " << adj.second << " )" << std::endl;
+    //     }
+    // }
+    cout<< temp.test();
 }

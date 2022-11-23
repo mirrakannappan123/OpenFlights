@@ -2,8 +2,8 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-Graph :: Graph(){
-    map = {};
+string Graph::test(){
+    return "woo";
 }
 std::map<std::string, std::vector<std::string>> Graph::parse(const string& filename1) {
     ifstream ifs(filename1);
@@ -27,7 +27,7 @@ std::map<std::string, std::vector<std::string>> Graph::parse(const string& filen
     return airports;
 }
 
-std::map<string, std::vector<std::pair<std::string, long double>>> Graph::routes(const string& filename, const string& filename1) {
+std::map<string, std::vector<std::pair<std::string, long double>>> Graph::routes(string filename, string filename1) {
     ifstream ifs(filename);
     string source_ID;
     string dest_Id; 
