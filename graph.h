@@ -1,44 +1,37 @@
-#pragma once
-
+#pragma once 
+#include <iostream>
+#include <fstream>
+#include <list>
 #include <vector>
 #include <string>
-#include <unordered_map>
-#include "Airport.h"
-#include "PageRank.h"
-
+#include <sstream>
+#include <map>
 using namespace std;
+struct Node
+{
+    int val, dist;
+    // Node* next;
+};
+ 
+// Data structure to store a graph edge
+struct Edge {
+    int src, dest, weight;
+};
 
 class Graph {
     public:
-        //default constructor
-        Graph();
-        //constructor that accepts the airport and routes.dat files
-        Graph(string & airportFile, string & routesFile);
-        
-        //functions to insert vertices
-        void insertVertex(int v, Airport ap);
-        void insertAllVertices(std::string & fileName);
-        
-        //functions to create and insert edges
-        vector<string> _createEdge(string & line);
-        Flight createEdge(vector<string> flightVector);     
-        void insertEdge(Flight f);
-        void insertAllEdge(std::string & fileName);
-        
-        //functions that return private maps for debugging
-        unordered_map<int, Airport> getVertices();
-        unordered_map<int, Flight> adjVertWithWeight(int airportID);
-        string getAPName(int ID);
-        
-        //function to harvest adjmatrix from a graph obj
-        void adjMatrix(PageRank* pr_obj);
+    std::map<std::string, std::vector<std::string>> parse(const string& filename);
+   
+    std::map<string, std::vector<std::pair<std::string, long double>>> routes(string filename, string filename1);
+    string test();
+    Graph() = default;
 
+    long double toRadians(const long double ree);
+    long double distance(long double lat1, long double long1, long double lat2, long double long2);
 
     private:
-        //functions that calculate the weight of an edge
-        double calcWeight(int fromID, int toID);
-        double radianConvert(double degree);
-        
-        //each graph object hosts a map of airports to its corresponding ID
-        unordered_map<int, Airport> vertices;
+
+    std::map<std::string, std::vector<std::pair<std::string, unsigned>>> map;
+
 };
+
