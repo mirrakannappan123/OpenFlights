@@ -24,7 +24,7 @@ class Edge
      * @param label - the edge label
      */
     Edge(Vertex first, Vertex next, double weig, string label)
-        : source(first), dest(next), weight(weig), label(label)
+        : source(first), dest(next),label(label), weight(weig)
     { /* nothing */
     }
 
@@ -62,6 +62,7 @@ class Edge
     int setWeight(double w) const
     {
         w = weight; 
+        return w; 
     }
     /**
      * Gets edge weight.
