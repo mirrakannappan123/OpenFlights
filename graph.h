@@ -20,7 +20,7 @@ struct Edge {
 
 class Graph {
     public:
-    std::map<std::string, std::vector<std::string>> parse(const string& filename);
+    std::map<std::string, std::vector<long double>> parse(const string& filename);
     std::map<string, std::vector<std::pair<std::string, long double>>> routes(string filename, string filename1);
     string test();
     Graph() = default;

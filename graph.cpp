@@ -2,28 +2,41 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-string Graph::test(){
+string Graph::test()
+{
     return "woo";
 }
-std::map<std::string, std::vector<std::string>> Graph::parse(const string& filename1) {
+
+std::map<std::string, std::vector<long double>> Graph::parse(const string& filename1) {
     ifstream ifs(filename1);
-    std::map<std::string, std::vector<std::string>> airports;
+    std::map<std::string, std::vector<long double>> airports;
     string temp;
-    for(string airport; std::getline(ifs,airport); airport = " ") {
+    for(string airport; std::getline(ifs,airport); airport = " ") 
+    {
         std::string airportID;
-        vector<string> dist;
-        int count = 0;
+        vector<long double> dist;
+        int count = 0, lat_access = 6, long_access = 7;
         stringstream info(airport);
         while (getline(info, temp , ',')) {
-            if (count == 0) {
+            if (count == 0) 
+            {
                 airportID = temp;
             }
-            if (count == 6 || count == 7)  {
-                dist.push_back(temp);
+            if (count == lat_access || count == long_access)  
+            {
+                try
+                {
+                long double latlong = stod(temp);
+                    cout << latlong << endl;
+                    dist.push_back(latlong);
+                }catch(std::invalid_argument& error)
+                {
+                    lat_access ++;
+                    long_access ++;
+                }
             }
             count++;
         }
-        // cout<< airportID << "," << dist[0] << "," << dist[1] << endl;
         airports.insert({airportID, dist});
     }
     return airports;
@@ -33,7 +46,7 @@ std::map<string, std::vector<std::pair<std::string, long double>>> Graph::routes
     ifstream ifs(filename);
     string source_ID, dest_Id, temp; 
     std::map<string, std::vector<std::pair<std::string, long double>>> mappy;
-    std::map<std::string, std::vector<std::string>> latlong = parse(filename1);
+    std::map<std::string, std::vector<long double>> latlong = parse(filename1);
     // cout << sizeof(latlong)<< endl;
     // for(int i = 1; i <= 14111; i++ ){
     //     string a = to_string(i);
@@ -44,7 +57,8 @@ std::map<string, std::vector<std::pair<std::string, long double>>> Graph::routes
         int count = 0; 
         stringstream info(routes);
         while(getline(info, temp, ',')) {
-            if(count == 3) {
+    
+            if(count == 3 ) {
                 source_ID = temp;
             }
             if(count == 5) {
@@ -52,18 +66,21 @@ std::map<string, std::vector<std::pair<std::string, long double>>> Graph::routes
             }
             count++;
         }
+        if(dest_Id == "\\N" || source_ID == "\\N") continue;
         // unsigned int source_lat =  stoi("1");
         // unsigned int source_long =  stoi("2");
         // unsigned int dest_lat =  stoi("3");
         // unsigned int dest_long =  stoi("4");
-        unsigned int source_lat =  stoi(latlong[source_ID].at(0));
+        // cout << source_ID << endl;
         // cout<<latlong[source_ID].at(0)<< endl;
-        unsigned int source_long =  stoi(latlong[source_ID].at(1));
         // cout<<latlong[source_ID].at(1)<< endl;
-        unsigned int dest_lat =  stoi(latlong[dest_Id].at(0));
         // cout<<latlong[dest_Id].at(0) << endl;
-        unsigned int dest_long =  stoi(latlong[dest_Id].at(1));
         // cout<< latlong[dest_Id].at(1)<<endl;
+        unsigned int source_lat = latlong[source_ID].at(0);
+        unsigned int source_long = latlong[source_ID].at(1);
+        unsigned int dest_lat = latlong[dest_Id].at(0);
+        unsigned int dest_long = latlong[dest_Id].at(1);
+
         long double dis = distance(source_lat,source_long, dest_lat, dest_long);
 
         std::pair<std::string, long double> dest = make_pair(dest_Id, dis);
@@ -72,16 +89,19 @@ std::map<string, std::vector<std::pair<std::string, long double>>> Graph::routes
         {
             related.push_back(dest);
             mappy.insert({source_ID, related});
-            cout << mappy[source_ID][0].first << endl;
+            // cout << mappy[source_ID][0].first << endl;
         }else
         {
              mappy[source_ID].push_back(dest);
         } 
     }
-    // for(auto another: mappy["1"])
-    // {
-    //     cout << another.first << ", " << another.second<< endl;
-    // }
+    for(auto source: mappy)
+    {
+        for(auto dest: source.second)
+        {
+            cout <<  source.first << "," << dest.second << endl;
+        }
+    }
     return mappy;
 }
 
