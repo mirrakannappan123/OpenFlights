@@ -2,8 +2,9 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-
-
+Parse::Parse() {
+    graph = Graph(true, true);
+}
 std::map<std::string, std::vector<std::string>> Parse::parse(const string& filename1) {
     std::cout<<filename1<<std::endl;
     std::vector<string> air;
@@ -91,11 +92,11 @@ std::map<string, std::vector<std::pair<std::string, long double>>> Parse::routes
 
         std::pair<std::string, long double> dest = make_pair(dest_Id, dis);
         
-        Vertex soure = source_ID;
-        Vertex dest = dest_Id;
+        Vertex source = source_ID;
+        Vertex d = dest_Id;
         double dist = dis; 
-        graph.insertEdge(source_ID, dest_Id);
-        graph.setEdgeWeight(source_ID, dest_Id, dis);
+        graph.insertEdge(source, d);
+        graph.setEdgeWeight(source, d, dist);
         // cout << dest.first << ", " << dest.second << endl;
             if(!mappy.count(source_ID))
             {
@@ -159,6 +160,9 @@ long double Parse::distance(long double lat1, long double long1,
     ans = ans * R;
  
     return ans;
+}
+Graph Parse::getGraph() {
+    return graph;
 }
 
 

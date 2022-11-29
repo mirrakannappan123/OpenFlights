@@ -101,43 +101,14 @@ double Graph::getEdgeWeight(Vertex source, Vertex destination) const {
     if (!weight)
         error("can't get edge weights on non-weighted graphs!");
 
-    if(assertEdgeExists(source, destination, __func__) == false)
-        return InvalidWeight;
     return adjacency_list[source][destination].getWeight();
 }
 void Graph::insertVertex(Vertex v) {
-    removeVertex(v);
     // make it empty again
     adjacency_list[v] = unordered_map<Vertex, Edge>();
 }
 
-Vertex Graph::removeVertex(Vertex v) {
-    if (adjacency_list.find(v) != adjacency_list.end())
-    {
-        if(!direct){
-            for (auto it = adjacency_list[v].begin(); it != adjacency_list[v].end(); it++)
-            {
-                Vertex u = it->first;
-                adjacency_list[u].erase(v); 
-            }
-            adjacency_list.erase(v);
-            return v;
-        }
-        
-        adjacency_list.erase(v);
-        for(auto it2 = adjacency_list.begin(); it2 != adjacency_list.end(); it2++)
-        {
-            Vertex u = it2->first;
-            if (it2->second.find(v)!=it2->second.end())
-            {
-                it2->second.erase(v);
-            }
-        }
-        return v;
-    }
 
-    return InvalidVertex;
-}
 void Graph::insertEdge(Vertex source, Vertex destination) {
     if(adjacency_list.find(source)!= adjacency_list.end() 
     && adjacency_list[source].find(destination)!= adjacency_list[source].end())
@@ -216,4 +187,52 @@ bool Graph::assertEdgeExists(Vertex source, Vertex destination, string functionN
 
 void Graph::error(string message) const {
     cerr << "\033[1;31m[Graph Error]\033[0m " + message << endl;
+}
+
+void Graph::initSnapshot(string title)
+{
+    picNum = 0;
+    picName = title;
+}
+
+/**
+ * Saves a snapshot of the graph to file.
+ * initSnapshot() must be run first.
+ */
+void Graph::snapshot()
+{
+    std::stringstream ss;
+    ss << picNum;
+    string newName = picName + ss.str();
+    //savePNG(newName);
+    ++picNum;
+}
+
+/**
+ * Prints the graph to stdout.
+ */
+void Graph::print() const
+{
+    for (auto it = adjacency_list.begin(); it != adjacency_list.end(); ++it) 
+    {
+        cout << it->first << endl;
+        for (auto it2 = it->second.begin(); it2 != it->second.end(); ++it2) 
+        {
+            std::stringstream ss;
+            ss << it2->first; 
+            string vertexColumn = "    => " + ss.str();
+            vertexColumn += " " ;
+            cout << std::left << std::setw(26) << vertexColumn;
+            string edgeColumn = "edge label = \"" + it2->second.getLabel()+ "\"";
+            cout << std::left << std::setw(26) << edgeColumn;
+            if (weight)
+                cout << "weight = " << it2->second.getWeight();
+            cout << endl;
+        }
+        cout << endl;
+    }
+}
+
+std::unordered_map<Vertex, std::unordered_map<Vertex, Edge>> Graph::getAdjList() {
+    return adjacency_list;
 }
