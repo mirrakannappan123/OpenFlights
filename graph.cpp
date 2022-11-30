@@ -1,309 +1,236 @@
 #include "graph.h"
-#include <bits/stdc++.h>
 
-using namespace std;
-string Graph::test()
+
+Graph::Graph(bool weighted) {
+   weight = weighted; 
+    direct = false; 
+}
+
+Graph::Graph(bool weighted, bool directed){
+    weight= weighted; 
+    direct = directed; 
+}
+Graph::Graph(bool weighted, bool directed, map<string,vector<pair<string, long double>>> map)
 {
-    return "woo";
-}
+    weight= weighted; 
+    direct = directed;
 
-std::map<std::string, std::vector<long double>> Graph::parse(const string& filename1) {
-    ifstream ifs(filename1);
-    std::map<std::string, std::vector<long double>> airports;
-    string temp;
-    for(string airport; std::getline(ifs,airport); airport = " ") 
+    for(auto source: map)
     {
-        std::string airportID;
-        vector<long double> dist;
-        int count = 0, lat_access = 6, long_access = 7;
-        stringstream info(airport);
-        while (getline(info, temp , ',')) {
-            if (count == 0) 
-            {
-                airportID = temp;
-            }
-            if (count == lat_access || count == long_access)  
-            {
-                try
-                {
-                long double latlong = stod(temp);
-                    cout << latlong << endl;
-                    dist.push_back(latlong);
-                }catch(std::invalid_argument& error)
-                {
-                    lat_access ++;
-                    long_access ++;
-                }
-            }
-            count++;
-        }
-        airports.insert({airportID, dist});
-    }
-    return airports;
-}
-
-std::map<string, std::vector<std::pair<std::string, long double>>> Graph::routes(string filename, string filename1) {
-    ifstream ifs(filename);
-    string source_ID, dest_Id, temp; 
-    std::map<string, std::vector<std::pair<std::string, long double>>> mappy;
-    std::map<std::string, std::vector<long double>> latlong = parse(filename1);
-    // cout << sizeof(latlong)<< endl;
-    // for(int i = 1; i <= 14111; i++ ){
-    //     string a = to_string(i);
-    //     if(latlong.count(a)) cout << a << ", " <<latlong[a][0]<< endl;
-    // }
-    for(string routes; std::getline(ifs,routes); routes = " ") {
-        std::vector<std::pair<std::string, long double>> related;
-        int count = 0; 
-        stringstream info(routes);
-        while(getline(info, temp, ',')) {
-    
-            if(count == 3 ) {
-                source_ID = temp;
-            }
-            if(count == 5) {
-                dest_Id = temp;
-            }
-            count++;
-        }
-        if(dest_Id == "\\N" || source_ID == "\\N") continue;
-        // unsigned int source_lat =  stoi("1");
-        // unsigned int source_long =  stoi("2");
-        // unsigned int dest_lat =  stoi("3");
-        // unsigned int dest_long =  stoi("4");
-        // cout << source_ID << endl;
-        // cout<<latlong[source_ID].at(0)<< endl;
-        // cout<<latlong[source_ID].at(1)<< endl;
-        // cout<<latlong[dest_Id].at(0) << endl;
-        // cout<< latlong[dest_Id].at(1)<<endl;
-        unsigned int source_lat = latlong[source_ID].at(0);
-        unsigned int source_long = latlong[source_ID].at(1);
-        unsigned int dest_lat = latlong[dest_Id].at(0);
-        unsigned int dest_long = latlong[dest_Id].at(1);
-
-        long double dis = distance(source_lat,source_long, dest_lat, dest_long);
-
-        std::pair<std::string, long double> dest = make_pair(dest_Id, dis);
-        // cout << dest.first << ", " << dest.second << endl;
-        if(!mappy.count(source_ID))
-        {
-            related.push_back(dest);
-            mappy.insert({source_ID, related});
-            // cout << mappy[source_ID][0].first << endl;
-        }else
-        {
-             mappy[source_ID].push_back(dest);
-        } 
-    }
-    for(auto source: mappy)
-    {
+        insertVertex(source.first);
         for(auto dest: source.second)
         {
-            cout <<  source.first << "," << dest.second << endl;
+            insertVertex(dest.first);
+            insertEdge(source.first, dest.first);
+            if (weighted)setEdgeWeight(source.first, dest.first, dest.second);
         }
     }
-    return mappy;
 }
 
-// int Graph::get_distance(int start_x, int start_y, int end_x, int end_y){
+vector<Vertex> Graph::getAdjacent(Vertex source) const {
+    auto lookup = adjacency_list.find(source);
 
+    if(lookup == adjacency_list.end())
+        return vector<Vertex>();
+
+    else
+    {
+        vector<Vertex> vertex_list;
+        unordered_map <Vertex, Edge> & map = adjacency_list[source];
+        for (auto it = map.begin(); it != map.end(); it++)
+        {
+            vertex_list.push_back(it->first);
+        }
+        return vertex_list;
+    }
+}
+
+vector<Vertex> Graph::getVertices() const {
+    vector<Vertex> ret;
+
+    for(auto it = adjacency_list.begin(); it != adjacency_list.end(); it++)
+    {
+        ret.push_back(it->first);
+    }
+
+    return ret;
+}
+
+Edge Graph::getEdge(Vertex source, Vertex destination) const {
+    if(assertEdgeExists(source, destination, __func__) == false)
+        return Edge();
+    Edge ret = adjacency_list[source][destination];
+    return ret;
+}
+
+vector<Edge> Graph::getEdges() const {
+    if (adjacency_list.empty())
+        return vector<Edge>();
+
+    vector<Edge> ret;
+    std::set<pair<Vertex, Vertex>> seen;
+
+    for (auto it = adjacency_list.begin(); it != adjacency_list.end(); it++)
+    {
+        Vertex source = it->first;
+        for (auto its = adjacency_list[source].begin(); its != adjacency_list[source].end(); its++)
+        {
+            Vertex destination = its->first;
+            if(seen.find(make_pair(source, destination)) == seen.end())
+            {
+                //this pair is never added to seen
+                ret.push_back(its->second);
+                seen.insert(make_pair(source,destination));
+                if(!direct)
+                {
+                    seen.insert(make_pair(destination, source));
+                }
+            }
+        }
+    }
+
+    return ret;
+}
+
+// Edge Graph::setEdgeLabel(Vertex source, Vertex destination, string label) {
+//     if (assertEdgeExists(source, destination, __func__) == false)
+//         return InvalidEdge;
+//     Edge e = adjacency_list[source][destination];
+//     Edge new_edge(source, destination, e.getWeight(), label);
+//     adjacency_list[source][destination] = new_edge;
+
+//     if(!directed)
+//     {
+//         Edge new_edge_reverse(destination,source, e.getWeight(), label);
+//         adjacency_list[destination][source] = new_edge_reverse;
+//     }
+//     return new_edge;
 // }
 
-long double Graph::toRadians(const long double ree)
+// string Graph::getEdgeLabel(Vertex source, Vertex destination) {
+//     if(assertEdgeExists(source, destination, __func__) == false)
+//         return InvalidLabel;
+//     return adjacency_list[source][destination].getLabel();
+// }
+
+double Graph::getEdgeWeight(Vertex source, Vertex destination) const {
+    if (!weight)
+        error("can't get edge weights on non-weighted graphs!");
+
+    return adjacency_list[source][destination].getWeight();
+}
+void Graph::insertVertex(Vertex v) {
+    // make it empty again
+    adjacency_list[v] = unordered_map<Vertex, Edge>();
+}
+
+
+void Graph::insertEdge(Vertex source, Vertex destination) {
+    if(adjacency_list.find(source)!= adjacency_list.end() 
+    && adjacency_list[source].find(destination)!= adjacency_list[source].end())
+    {
+        //edge already exit
+        return ;
+    }
+
+    if(adjacency_list.find(source)==adjacency_list.end())
+    {
+        adjacency_list[source] = unordered_map<Vertex, Edge>();
+    }
+        //source vertex exists
+    adjacency_list[source][destination] = Edge(source, destination);
+    if(!direct)
+    {
+        if(adjacency_list.find(destination)== adjacency_list.end())
+        {
+            adjacency_list[destination] = unordered_map<Vertex, Edge>();
+        }
+        adjacency_list[destination][source] = Edge(source, destination);
+    }
+}
+
+void Graph::setEdgeWeight(Vertex source, Vertex destination, double weight) {
+    if (assertEdgeExists(source, destination, __func__) == false)
+        return;;
+    Edge e = adjacency_list[source][destination];
+    //std::cout << "setting weight: " << weight << std::endl;
+    Edge new_edge(source, destination, weight, e.getLabel());
+    adjacency_list[source][destination] = new_edge;
+
+    if(!direct)
+        {
+            Edge new_edge_reverse(destination,source, weight, e.getLabel());
+            adjacency_list[destination][source] = new_edge_reverse;
+        }
+
+    return;
+}
+
+bool Graph::assertVertexExists(Vertex v, string functionName) const
 {
-    // cmath library in C++
-    // defines the constant
-    // M_PI as the value of
-    // pi accurate to 1e-30
-    long double one_deg = (M_PI) / 180;
-    return (one_deg * ree);
+    if (adjacency_list.find(v) == adjacency_list.end())
+    {
+        if (functionName != "")
+            error(functionName + " called on nonexistent vertices");
+        return false;
+    }
+    return true;
 }
- 
-long double Graph::distance(long double lat1, long double long1,
-                     long double lat2, long double long2)
+
+bool Graph::assertEdgeExists(Vertex source, Vertex destination, string functionName) const {
+    if(assertVertexExists(source,functionName) == false)
+        return false;
+    if(adjacency_list[source].find(destination)== adjacency_list[source].end())
+    {
+        if (functionName != "")
+            error(functionName + " called on nonexistent edge " + source + " -> " + destination);
+        return false;
+    }
+
+    if(!direct)
+    {
+        if (assertVertexExists(destination,functionName) == false)
+            return false;
+        if(adjacency_list[destination].find(source)== adjacency_list[destination].end())
+        {
+            if (functionName != "")
+                error(functionName + " called on nonexistent edge " + destination + " -> " + source);
+            return false;
+        }
+    }
+    return true;
+}
+
+void Graph::error(string message) const {
+    cerr << "\033[1;31m[Graph Error]\033[0m " + message << endl;
+}
+
+
+/**
+ * Prints the graph to stdout.
+ */
+void Graph::print() const
 {
-    // Convert the latitudes
-    // and longitudes
-    // from degree to radians.
-    lat1 = toRadians(lat1);
-    long1 = toRadians(long1);
-    lat2 = toRadians(lat2);
-    long2 = toRadians(long2);
-     
-    // Haversine Formula
-    long double dlong = long2 - long1;
-    long double dlat = lat2 - lat1;
- 
-    long double ans = pow(sin(dlat / 2), 2) +
-                          cos(lat1) * cos(lat2) *
-                          pow(sin(dlong / 2), 2);
- 
-    ans = 2 * asin(sqrt(ans));
- 
-    // Radius of Earth in
-    // Kilometers, R = 6371
-    // Use R = 3956 for miles
-    long double R = 6371;
-     
-    // Calculate the result
-    ans = ans * R;
- 
-    return ans;
+    for (auto it = adjacency_list.begin(); it != adjacency_list.end(); ++it) 
+    {
+        cout << it->first << endl;
+        for (auto it2 = it->second.begin(); it2 != it->second.end(); ++it2) 
+        {
+            std::stringstream ss;
+            ss << it2->first; 
+            string vertexColumn = "    => " + ss.str();
+            vertexColumn += " " ;
+            cout << std::left << std::setw(26) << vertexColumn;
+            string edgeColumn = "edge label = \"" + it2->second.getLabel()+ "\"";
+            cout << std::left << std::setw(26) << edgeColumn;
+            if (weight)
+                cout << "weight = " << it2->second.getWeight();
+            cout << endl;
+        }
+        cout << endl;
+    }
 }
 
-// Data structure to store adjacency list nodes
-// struct Node
-// {
-//     int val, cost;
-//     Node* next;
-// };
- 
-// // Data structure to store a graph edge
-// struct Edge {
-//     int src, dest, weight;
-// };
- 
-// class Graph
-// {
-//     // Function to allocate a new node for the adjacency list
-//     Node* getAdjListNode(int value, int weight, Node* head)
-//     {
-//         Node* newNode = new Node;
-//         newNode->val = value;
-//         newNode->cost = weight;
- 
-//         // point new node to the current head
-//         newNode->next = head;
- 
-//         return newNode;
-//     }
- 
-//     int N;    // total number of nodes in the graph
- 
-// public:
- 
-//     // An array of pointers to Node to represent the
-//     // adjacency list
-//     Node **head;
-
-//     Graph(const string& filename1, const string& filename2) { 
-//         ifstream ifs(filename1);
-//         string airport;
-//         vector<string> airports;
-    
-//         if (ifs.is_open()) {
-//             while (getline(ifs, airport)) {
-//                 int count = 0;
-//                 airports.clear();
-//                 stringstream str(airport);
-//                 while (getline(ifs, airport, ',')) {
-//                     if (count == 4) {
-//                         airports.push_back(airport);
-//                     }
-//                     count++;
-
-//                 }
-
-//             }
-            
-//         }
-
-//         ifstream ifs2(filename2);
-//         string dist;
-//         if (ifs2.is_open()) {
-//             while (getline(ifs2, dist)) {
-                
-
-
-//             }
-//         }
-
-//     }
- 
-//     // Constructor
-//     Graph(Edge edges[], int n, int N) {
-
-//         // allocate memory
-//         head = new Node*[N]();
-//         this->N = N;
- 
-//         // initialize head pointer for all vertices
-//         for (int i = 0; i < N; i++) {
-//             head[i] = nullptr;
-//         }
- 
-//         // add edges to the directed graph
-//         for (unsigned i = 0; i < n; i++)
-//         {
-//             int src = edges[i].src;
-//             int dest = edges[i].dest;
-//             int weight = edges[i].weight;
- 
-//             // insert at the beginning
-//             Node* newNode = getAdjListNode(dest, weight, head[src]);
- 
-//             // point head pointer to the new node
-//             head[src] = newNode;
- 
-//             // uncomment the following code for undirected graph
- 
-//             /*
-//             newNode = getAdjListNode(src, weight, head[dest]);
- 
-//             // change head pointer to point to the new node
-//             head[dest] = newNode;
-//             */
-//         }
-//     }
- 
-//     // Destructor
-//     ~Graph() {
-//         for (int i = 0; i < N; i++) {
-//             delete[] head[i];
-//         }
- 
-//         delete[] head;
-//     }
-// };
- 
-// // Function to print all neighboring vertices of a given vertex
-// void printList(Node* ptr, int i)
-// {
-//     while (ptr != nullptr)
-//     {
-//         cout << "(" << i << ", " << ptr->val << ", " << ptr->cost << ") ";
-//         ptr = ptr->next;
-//     }
-//     cout << endl;
-// }
- 
-// // Graph implementation in C++ without using STL
-// int main()
-// {
-//     // an array of graph edges as per the above diagram
-//     Edge edges[] =
-//     {
-//         // (x, y, w) —> edge from `x` to `y` having weight `w`
-//         {0, 1, 6}, {1, 2, 7}, {2, 0, 5}, {2, 1, 4}, {3, 2, 10}, {4, 5, 1}, {5, 4, 3}
-//     };
- 
-//     // total number of nodes in the graph (labelled from 0 to 5)
-//     int N = 6;
- 
-//     // calculate the total number of edges
-//     int n = sizeof(edges)/sizeof(edges[0]);
- 
-//     // construct graph
-//     Graph graph(edges, n, N);
- 
-//     // print adjacency list representation of a graph
-//     for (int i = 0; i < N; i++)
-//     {
-//         // print all neighboring vertices of a vertex `i`
-//         printList(graph.head[i], i);
-//     }
- 
-//     return 0;
-// }
-
-
+std::unordered_map<Vertex, std::unordered_map<Vertex, Edge>> Graph::getAdjList() {
+    return adjacency_list;
+}
