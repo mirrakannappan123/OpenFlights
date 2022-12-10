@@ -1,6 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
-#include "/workspaces/225_Final_Project/225_Final_Project/parse.h"
+#include "parse.h"
 TEST_CASE("Parse to Map Correctly", "[parse]" )
 {
    Parse temp = Parse();
