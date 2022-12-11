@@ -4,6 +4,7 @@
 #include "parse.h"
 
 
+
 using namespace std;
 
 // void display_AdjList(adjNode* ptr, int i)
@@ -19,6 +20,7 @@ using namespace std;
 int main()
 {   
    // graph edges array.
+   
     Parse temp = Parse();
     
 
@@ -28,7 +30,7 @@ int main()
     string file2 = "airports-extended.dat.txt";
     std::map<string, std::vector<std::pair<std::string, long double>>> map = temp.routes(file1, file2);
     temp.getGraph().dfs();
-    // temp.getGraph().printDFS();
+ 
 
 
     //std::vector<Vertex> test = temp.getGraph().getAdjacent(); 

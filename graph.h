@@ -40,7 +40,8 @@ class Graph {
     void print() const;
     bool isDirected() const;
     void dfs();
-    void dfs(Vertex src_airport);
+    std::vector<Vertex> dfs(Vertex src_airport);
+    void dfs_sample(Vertex src_airport, int idx);
     void printDFS();
 
 
