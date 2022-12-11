@@ -41,7 +41,6 @@ class Graph {
     bool isDirected() const;
     void dfs();
     std::vector<Vertex> dfs(Vertex src_airport);
-    void dfs_sample(Vertex src_airport, int idx);
     void printDFS();
 
 

@@ -258,32 +258,6 @@ void Graph::dfs(){
 
 std::vector<Vertex> Graph::dfs(Vertex src_airport){
   if(visited.find(src_airport) != visited.end()){
-    return {};
-  }
-  visited.insert(src_airport);
-  path.push_back(src_airport);
-  std::vector<Vertex> dest_airports;
-  for(auto element : adjacency_list[src_airport]){
-    dest_airports.push_back(element.first);
-  }
-  for(size_t i = 0; i < adjacency_list[src_airport].size(); i++){
-    if(visited.find(dest_airports[i]) == visited.end()){
-        // std::cout << "dest airport " << dest_airports[i] << std::endl;
-      dfs(dest_airports[i]);
-    }
-  }
-  printDFS();
-  return path;
-}
-
-
-void Graph::dfs_sample(Vertex src_airport, int idx){
-    idx--;
-
-  if(visited.find(src_airport) != visited.end()){
-    return;
-  }
-  if (idx == 0) {
     return;
   }
   visited.insert(src_airport);
@@ -300,3 +274,4 @@ void Graph::dfs_sample(Vertex src_airport, int idx){
   }
   printDFS();
 }
+
