@@ -1,37 +1,59 @@
-#pragma once 
-#include <iostream>
-#include <fstream>
+#pragma once
 #include <list>
-#include <vector>
+#include <utility>
+#include <algorithm>
 #include <string>
+#include <cstdlib>
+#include <climits>
+#include <fstream>
+#include <iostream>
+#include <iomanip>
 #include <sstream>
-#include <map>
+#include <vector>
+#include "edge.h"
+#include <unordered_map>
+#include <set>
+
 using namespace std;
-struct Node
-{
-    int val, dist;
-    // Node* next;
-};
- 
-// Data structure to store a graph edge
-struct Edge {
-    int src, dest, weight;
-};
-
 class Graph {
-    public:
-    std::map<std::string, std::vector<std::string>> parse(const string& filename);
-   
-    std::map<string, std::vector<std::pair<std::string, long double>>> routes(string filename, string filename1);
-    string test();
+    public: 
     Graph() = default;
+    Graph(bool weighted); 
+     Graph(bool weighted, bool directed);
+     vector<Vertex> getAdjacent(Vertex source) const;
+     vector<Vertex> getVertices() const;
+     Edge getEdge(Vertex source, Vertex destination) const;
+     vector<Edge> getEdges() const;
+     //Edge setEdgeLabel(Vertex source, Vertex destination, string label);
+     //string getEdgeLabel(Vertex source, Vertex destination);
+     double getEdgeWeight(Vertex source, Vertex destination) const;
+     void insertVertex(Vertex v);
+     void insertEdge(Vertex source, Vertex destination);
+     void setEdgeWeight(Vertex source, Vertex destination, double weight);
+    bool assertEdgeExists(Vertex source, Vertex destination, string functionName) const;
+    bool assertVertexExists(Vertex v, string functionName) const;
+    void error(string message) const;
+    std::unordered_map<Vertex, std::unordered_map<Vertex, Edge>> getAdjList();
 
-    long double toRadians(const long double ree);
-    long double distance(long double lat1, long double long1, long double lat2, long double long2);
+    void initSnapshot(string title);
+    void snapshot();
+    void print() const;
+    bool isDirected() const;
+    void dfs();
+    void dfs(Vertex src_airport);
+    void printDFS();
 
-    private:
 
-    std::map<std::string, std::vector<std::pair<std::string, unsigned>>> map;
-
+    private: 
+    
+    mutable std::unordered_map<Vertex, std::unordered_map<Vertex, Edge>> adjacency_list;
+    std::set<Vertex> visited;
+    std::vector<Vertex> path;
+    bool weight;
+    bool direct;
+    int picNum;
+    string picName;
 };
+
+
 
