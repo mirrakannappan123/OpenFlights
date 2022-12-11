@@ -40,7 +40,7 @@ class Parse {
     Graph graph; 
     
 };
-
+ //std::map<std::string, std::vector<std::pair<std::string, unsigned>>> map;
 
 // struct Node
 // {

@@ -234,3 +234,105 @@ void Graph::print() const
 std::unordered_map<Vertex, std::unordered_map<Vertex, Edge>> Graph::getAdjList() {
     return adjacency_list;
 }
+
+
+void Graph::dijkstraShortestPathh(Vertex start_airport, int total_airpots) {
+    cout <<"reachline"<<endl;
+    double infi = numeric_limits<double>::infinity();
+    cout <<"reachline"<<endl;
+    Vertex startnode = start_airport, nextnode;
+    int count = 0;
+    double mindistance;
+    auto cost = getAdjList();
+    map<Vertex,double> distance;
+    map<Vertex, bool> visited; 
+    map<Vertex, Vertex>pred;
+    // int cost[MAX][MAX],distance[MAX],pred[MAX];
+    // int count,mindistance,nextnode,i,j;
+    // vector<string>
+    //pred[] stores the predecessor of each node
+    //count gives the number of nodes seen so far
+    //create the cost matrix
+    // for(i=0;i<n;i++)
+    // for(j=0;j<n;j++)
+    // if(G[i][j]==0)
+    //     cost[i][j]=infi;
+    // else
+    // cost[i][j]=G[i][j];
+    // //initialize pred[],distance[] and visited[]
+
+    // auto cost = getAdjList();
+    // map distance, 
+    cout << cost[startnode]["airport1"].getWeight() << endl;
+    for(auto key_pair: cost[startnode])
+    {
+        distance.insert({key_pair.first, key_pair.second.getWeight()});
+        pred[key_pair.first] = startnode;
+        visited[key_pair.first] = 0;
+        cout << key_pair.first << " dis: " << key_pair.second.getWeight();
+    }
+    // for(i=0;i<n;i++)
+    // {
+    //     distance[i]=cost[startnode][i];
+    //     pred[i]=startnode;
+    //     visited[i]=0;
+    // }
+    distance[startnode] = 0.0;
+    visited[startnode] = 1;
+    while(count<total_airpots-1)
+    {
+        mindistance=infi;
+    //nextnode gives the node at minimum distance
+        for(auto key: cost)
+        {
+              if(distance[key.first]<mindistance&&!visited[key.first])
+            {
+                mindistance=distance[key.first];
+                nextnode= key.first;
+            }
+        }
+        //check if a better path exists through nextnode
+        visited[nextnode]=1;
+        for(auto key: cost)
+        {
+            if(!visited[key.first])
+            {
+                if((mindistance+cost[nextnode][key.first].getWeight())<distance[key.first])
+                {
+                    distance[key.first] = mindistance+cost[nextnode][key.first].getWeight();
+                    pred[key.first]=nextnode;
+                }
+            }
+        }
+        count++;
+    }
+    //print the path and distance of each node
+    // for(auto key: cost)
+    // {
+    //     if(key.first!=startnode)
+    //     {
+    //         cout << "\nDistance of node " << key.first << " = " << distance[key.first]<<endl;
+    //         cout << "\nPath= " << key.first;
+    //         Vertex j=key.first;
+    //         do
+    //         {
+    //             j=pred[j];
+    //             cout<< " <-"<< j;
+    //         }while(j!=startnode);
+    //     }
+    // }
+      for(auto key: cost)
+    {
+        if(key.first!=startnode)
+        {
+            cout << "\nDistance of node " << key.first << " = " << distance[key.first]<<endl;
+            cout << "\nPath= " << key.first;
+            // Vertex j=key.first;
+            // do
+            // {
+            //     j=pred[j];
+            //     cout<< " <-"<< j;
+            // }while(j!=startnode);
+        }
+    }
+}
