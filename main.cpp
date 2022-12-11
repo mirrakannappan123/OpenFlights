@@ -16,36 +16,42 @@ int main()
     string file1 = "routes.dat.txt";
     string file2 = "airports-extended.dat.txt";
     std::map<string, std::vector<std::pair<std::string, long double>>> map = temp.routes(file1, file2);
-
-    // int total = 0; //total number of airlines
-    // for(auto route: map){
-    //     for(auto adj: route.second){
-    //         std::cout << "( Source ID: " << route.first << ",  Destination ID: " << adj.first << ",  How far: " << adj.second << " )" << std::endl;
-    //         total++;
-    //     }
-    // }
- 
-    cout<<"The total number of airlines are:" << temp.Valid_Airlines(file1)<<endl;
-    cout<<"The total number of airlines that are traversed through map created by parse function are : " << temp.Valid_Airlines(file1)<<endl;
-
-    cout << "-------------------------------------------------------------------------"<< endl;
-    cout << "Graph Representation:"<< endl;
     Graph g(true, true, map);
-    vector<Vertex> vertices = g.getVertices();
-    // for(auto src: vertices)
-    // {
-    //     vector<Vertex> adj_lists = g.getAdjacent(src);
-    //     cout<< "( Source Vertex: " <<  src << ", Adj_Lists:{";
-    //     for(auto adj: adj_lists) cout << adj << ", ";
-    //     cout << "})" << endl;
-    // }
-    std::cout<<vertices[3]<<" " <<vertices[15]<<std::endl;
-    Floyd f = Floyd(g);
-    std::vector<std::string> to_return = f.shortestPath(vertices[3], vertices[15]);
-    std::cout<<vertices[3]<<" " <<vertices[15]<<std::endl;
-    for(size_t i = 0; i < to_return.size(); i++) {
-        std::cout<<to_return[i]<< " ";
+    Floyd f(g);
+
+    //int total = 0; //total number of airlines
+    for(auto route: map){
+        for(auto adj: route.second){
+            std::cout << "( Source ID: " << route.first << ",  Destination ID: " << adj.first << ",  How far: " << adj.second << " )" << std::endl;
+            std::vector<std::string> to_return = f.shortestPath(route.first, adj.first);
+            for(size_t i = 0; i < to_return.size(); i++) {
+                std::cout<<to_return[i]<< " ";
+        }
     }
+    }
+
+ 
+    // cout<<"The total number of airlines are:" << temp.Valid_Airlines(file1)<<endl;
+    // cout<<"The total number of airlines that are traversed through map created by parse function are : " << temp.Valid_Airlines(file1)<<endl;
+
+    // cout << "-------------------------------------------------------------------------"<< endl;
+    // cout << "Graph Representation:"<< endl;
+    // Graph g(true, true, map);
+    // //vector<Vertex> vertices = g.getVertices();
+    // // for(auto src: vertices)
+    // // {
+    // //     vector<Vertex> adj_lists = g.getAdjacent(src);
+    // //     cout<< "( Source Vertex: " <<  src << ", Adj_Lists:{";
+    // //     for(auto adj: adj_lists) cout << adj << ", ";
+    // //     cout << "})" << endl;
+    // // }
+    // //std::cout<<vertices[3]<<" " <<vertices[15]<<std::endl;
+    // Floyd f = Floyd(g);
+    // std::vector<std::string> to_return = f.shortestPath(vertices[3], vertices[1]);
+    // //std::cout<<vertices[3]<<" " <<vertices[15]<<std::endl;
+    // for(size_t i = 0; i < to_return.size(); i++) {
+    //     std::cout<<to_return[i]<< " ";
+    // }
 // void display_AdjList(adjNode* ptr, int i)
 // {
 //     while (ptr != nullptr) {

@@ -12,7 +12,6 @@ Graph::Graph(bool weighted, bool directed){
 }
 Graph::Graph(bool weighted, bool directed, map<string,vector<pair<string, long double>>> map)
 {
-    std::cout<<"int the mother"<<std::endl;
     weight= weighted; 
     direct = directed;
 
