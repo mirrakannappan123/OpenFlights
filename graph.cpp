@@ -17,10 +17,10 @@ Graph::Graph(bool weighted, bool directed, map<string,vector<pair<string, long d
 
     for(auto source: map)
     {
-        insertVertex(source.first);
+        if(!assertVertexExists(source.first, "constructo"))insertVertex(source.first);
         for(auto dest: source.second)
         {
-            insertVertex(dest.first);
+            if(!assertVertexExists(dest.first,"constructor"))insertVertex(dest.first);
             insertEdge(source.first, dest.first);
             if (weighted)setEdgeWeight(source.first, dest.first, dest.second);
         }
@@ -237,11 +237,10 @@ std::unordered_map<Vertex, std::unordered_map<Vertex, Edge>> Graph::getAdjList()
 
 
 void Graph::dijkstraShortestPathh(Vertex start_airport, int total_airpots) {
-    cout <<"reachline"<<endl;
+
     double infi = numeric_limits<double>::infinity();
-    cout <<"reachline"<<endl;
     Vertex startnode = start_airport, nextnode;
-    int count = 0;
+    int count = 1;
     double mindistance;
     auto cost = getAdjList();
     map<Vertex,double> distance;
@@ -263,13 +262,21 @@ void Graph::dijkstraShortestPathh(Vertex start_airport, int total_airpots) {
 
     // auto cost = getAdjList();
     // map distance, 
-    cout << cost[startnode]["airport1"].getWeight() << endl;
+//    for(auto key_pair: cost)
+//    {
+//     cout<< "source vertex: " << key_pair.first<< " ";
+//     for(auto value: key_pair.second)
+//     {
+//         cout << "dest: " << value.first << " how far:" << value.second.getWeight()<< endl;
+//     }
+//    }
     for(auto key_pair: cost[startnode])
     {
+        if(key_pair.second.getWeight() == -1) continue;
         distance.insert({key_pair.first, key_pair.second.getWeight()});
         pred[key_pair.first] = startnode;
         visited[key_pair.first] = 0;
-        cout << key_pair.first << " dis: " << key_pair.second.getWeight();
+        // cout << key_pair.first << " dis: " << key_pair.second.getWeight();
     }
     // for(i=0;i<n;i++)
     // {
@@ -285,24 +292,26 @@ void Graph::dijkstraShortestPathh(Vertex start_airport, int total_airpots) {
     //nextnode gives the node at minimum distance
         for(auto key: cost)
         {
-              if(distance[key.first]<mindistance&&!visited[key.first])
+            if(distance.count(key.first) && distance[key.first]<mindistance&&!visited[key.first])
             {
                 mindistance=distance[key.first];
                 nextnode= key.first;
             }
-        }
-        //check if a better path exists through nextnode
-        visited[nextnode]=1;
-        for(auto key: cost)
-        {
-            if(!visited[key.first])
+            visited[nextnode]=1;
+            for(auto key: cost)
             {
-                if((mindistance+cost[nextnode][key.first].getWeight())<distance[key.first])
+                if(!visited[key.first])
                 {
-                    distance[key.first] = mindistance+cost[nextnode][key.first].getWeight();
-                    pred[key.first]=nextnode;
+                    if(cost[nextnode][key.first].getWeight()!= -1 && (mindistance+cost[nextnode][key.first].getWeight())<distance[key.first])
+                    {
+                        // cout << "min in loop" << mindistance <<" cost" << cost[nextnode][key.first].getWeight() << endl;
+                        distance[key.first] = mindistance+cost[nextnode][key.first].getWeight();
+                        // cout << "dis in loop" << distance[key.first] << endl;
+                        pred[key.first]=nextnode;
+                    }
                 }
             }
+
         }
         count++;
     }

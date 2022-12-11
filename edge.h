@@ -59,7 +59,7 @@ class Edge
     /**
      * sets edge weight.
      */
-    int setWeight(double w) const
+    double setWeight(double w) const
     {
         w = weight; 
         return w; 
@@ -67,7 +67,7 @@ class Edge
     /**
      * Gets edge weight.
      */
-    int getWeight() const
+   double getWeight() const
     {
         return this->weight;
     }

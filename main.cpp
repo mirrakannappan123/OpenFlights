@@ -65,13 +65,27 @@ int main()
     //     break;
     // }
     // cout << "cout" << endl;
-     std::map<string, std::vector<std::pair<std::string, long double>>> map{
+     std::map<string, std::vector<std::pair<std::string, long double>>> map {
         {"airport0",{{"airport1", 10.5}, {"airport4", 100.5}, {"airport3", 30.5}}},
         {"airport1", {{"airport0", 10.5}, {"airport2", 50.5}}},
         {"airport2", {{"airport1", 50.5}, {"airport4", 10.5}, {"airport3", 20.5}}},
         {"airport3", {{"airport2", 20.5}, {"airport0", 30.5}, {"airport4", 60.5}}},
         {"airport4", {{"airport3", 60.5}, {"airport2", 10.5}, {"airport0",100.5}}}
      };
-     Graph g(true, true, map);
+
+   // for(auto key_pair: map)
+   // {
+   //  cout<< "source vertex: " << key_pair.first<< " ";
+   //  for(auto value: key_pair.second)
+   //  {
+   //      cout << "dest: " << value.first << " how far:" << value.second<< endl;
+   //  }
+   // }
+   //   map.insert({"airport0",{{"airport1", 10.5}, {"airport4", 100.5}, {"airport3", 30.5}}});
+   //   map.insert( {"airport1", {{"airport0", 10.5}, {"airport2", 50.5}}});
+   //   map.insert( {"airport2", {{"airport1", 50.5}, {"airport4", 10.5}, {"airport3", 20.5}}});
+   //   map.insert({"airport3", {{"airport2", 20.5}, {"airport0", 30.5}, {"airport4", 60.5}}});
+   //   map.insert( {"airport4", {{"airport3", 60.5}, {"airport2", 10.5}, {"airport0",100.5}}});
+     Graph g(true, false, map);
      g.dijkstraShortestPathh("airport0",map.size());
 }
