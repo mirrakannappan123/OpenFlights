@@ -258,7 +258,7 @@ void Graph::dfs(){
 
 std::vector<Vertex> Graph::dfs(Vertex src_airport){
   if(visited.find(src_airport) != visited.end()){
-    return;
+    return {};
   }
   visited.insert(src_airport);
   path.push_back(src_airport);
@@ -273,5 +273,6 @@ std::vector<Vertex> Graph::dfs(Vertex src_airport){
     }
   }
   printDFS();
+  return path;
 }
 
