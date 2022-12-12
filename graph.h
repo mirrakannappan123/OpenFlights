@@ -15,8 +15,11 @@
 #include <map>
 #include <set>
 #include<cmath>
+#include<queue>
 
 using namespace std;
+// sdPair ==> string double Pair  
+typedef pair<string, double> sdPair; 
 class Graph {
     public: 
         Graph() = default;
@@ -43,7 +46,7 @@ class Graph {
         void print() const;
         bool isDirected() const;
     
-        void dijkstraShortestPathh(Vertex start_airport, int total_airpots);
+        void dijkstraShortestPathh(Vertex start_airport, Vertex dest_airport);
 
     private: 
     

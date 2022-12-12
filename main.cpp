@@ -87,5 +87,5 @@ int main()
    //   map.insert({"airport3", {{"airport2", 20.5}, {"airport0", 30.5}, {"airport4", 60.5}}});
    //   map.insert( {"airport4", {{"airport3", 60.5}, {"airport2", 10.5}, {"airport0",100.5}}});
      Graph g(true, false, map);
-     g.dijkstraShortestPathh("airport0",map.size());
+     g.dijkstraShortestPathh("airport0", "airport4");
 }

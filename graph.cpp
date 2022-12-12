@@ -236,112 +236,163 @@ std::unordered_map<Vertex, std::unordered_map<Vertex, Edge>> Graph::getAdjList()
 }
 
 
-void Graph::dijkstraShortestPathh(Vertex start_airport, int total_airpots) {
+void Graph::dijkstraShortestPathh(Vertex start_airport, Vertex dest_airport) {
 
     double infi = numeric_limits<double>::infinity();
-    Vertex startnode = start_airport, nextnode;
-    int count = 1;
-    double mindistance;
+//     Vertex startnode = start_airport, nextnode;
+//     int count = 1;
+//     double mindistance;
+//     auto cost = getAdjList();
+//     map<Vertex,double> distance;
+//     map<Vertex, bool> visited; 
+//     map<Vertex, Vertex>pred;
+//     // int cost[MAX][MAX],distance[MAX],pred[MAX];
+//     // int count,mindistance,nextnode,i,j;
+//     // vector<string>
+//     //pred[] stores the predecessor of each node
+//     //count gives the number of nodes seen so far
+//     //create the cost matrix
+//     // for(i=0;i<n;i++)
+//     // for(j=0;j<n;j++)
+//     // if(G[i][j]==0)
+//     //     cost[i][j]=infi;
+//     // else
+//     // cost[i][j]=G[i][j];
+//     // //initialize pred[],distance[] and visited[]
+
+//     // auto cost = getAdjList();
+//     // map distance, 
+// //    for(auto key_pair: cost)
+// //    {
+// //     cout<< "source vertex: " << key_pair.first<< " ";
+// //     for(auto value: key_pair.second)
+// //     {
+// //         cout << "dest: " << value.first << " how far:" << value.second.getWeight()<< endl;
+// //     }
+// //    }
+//     for(auto key_pair: cost[startnode])
+//     {
+//         if(key_pair.second.getWeight() == -1) continue;
+//         distance.insert({key_pair.first, key_pair.second.getWeight()});
+//         pred[key_pair.first] = startnode;
+//         visited[key_pair.first] = 0;
+//         // cout << key_pair.first << " dis: " << key_pair.second.getWeight();
+//     }
+//     // for(i=0;i<n;i++)
+//     // {
+//     //     distance[i]=cost[startnode][i];
+//     //     pred[i]=startnode;
+//     //     visited[i]=0;
+//     // }
+//     distance[startnode] = 0.0;
+//     visited[startnode] = 1;
+//     while(count<total_airpots-1)
+//     {
+//         mindistance=infi;
+//     //nextnode gives the node at minimum distance
+//         for(auto key: cost)
+//         {
+//             if(distance.count(key.first) && distance[key.first]<mindistance&&!visited[key.first])
+//             {
+//                 mindistance=distance[key.first];
+//                 nextnode= key.first;
+//             }
+//             visited[nextnode]=1;
+//             for(auto key: cost)
+//             {
+//                 if(!visited[key.first])
+//                 {
+//                     if(cost[nextnode][key.first].getWeight()!= -1 && (mindistance+cost[nextnode][key.first].getWeight())<distance[key.first])
+//                     {
+//                         // cout << "min in loop" << mindistance <<" cost" << cost[nextnode][key.first].getWeight() << endl;
+//                         distance[key.first] = mindistance+cost[nextnode][key.first].getWeight();
+//                         // cout << "dis in loop" << distance[key.first] << endl;
+//                         pred[key.first]=nextnode;
+//                     }
+//                 }
+//             }
+
+//         }
+//         count++;
+//     }
+//     //print the path and distance of each node
+//     // for(auto key: cost)
+//     // {
+//     //     if(key.first!=startnode)
+//     //     {
+//     //         cout << "\nDistance of node " << key.first << " = " << distance[key.first]<<endl;
+//     //         cout << "\nPath= " << key.first;
+//     //         Vertex j=key.first;
+//     //         do
+//     //         {
+//     //             j=pred[j];
+//     //             cout<< " <-"<< j;
+//     //         }while(j!=startnode);
+//     //     }
+//     // }
+//       for(auto key: cost)
+//     {
+//         if(key.first!=startnode)
+//         {
+//             cout << "\nDistance of node " << key.first << " = " << distance[key.first]<<endl;
+//             cout << "\nPath= " << key.first;
+//             // Vertex j=key.first;
+//             // do
+//             // {
+//             //     j=pred[j];
+//             //     cout<< " <-"<< j;
+//             // }while(j!=startnode);
+//         }
+//     }
     auto cost = getAdjList();
+//     for(auto key_pair: cost)
+//    {
+//         cout<< "source vertex: " << key_pair.first<< " ";
+//         for(auto value: adjacency_list[key_pair.first])
+//         {
+//             cout << "dest: " << value.first << " how far:" << value.second.getWeight()<< endl;
+//         }
+//    }
     map<Vertex,double> distance;
     map<Vertex, bool> visited; 
-    map<Vertex, Vertex>pred;
-    // int cost[MAX][MAX],distance[MAX],pred[MAX];
-    // int count,mindistance,nextnode,i,j;
-    // vector<string>
-    //pred[] stores the predecessor of each node
-    //count gives the number of nodes seen so far
-    //create the cost matrix
-    // for(i=0;i<n;i++)
-    // for(j=0;j<n;j++)
-    // if(G[i][j]==0)
-    //     cost[i][j]=infi;
-    // else
-    // cost[i][j]=G[i][j];
-    // //initialize pred[],distance[] and visited[]
-
-    // auto cost = getAdjList();
-    // map distance, 
-//    for(auto key_pair: cost)
-//    {
-//     cout<< "source vertex: " << key_pair.first<< " ";
-//     for(auto value: key_pair.second)
-//     {
-//         cout << "dest: " << value.first << " how far:" << value.second.getWeight()<< endl;
-//     }
-//    }
-    for(auto key_pair: cost[startnode])
+    // map<Vertex, Vertex>pred;
+    priority_queue<sdPair, vector<sdPair>, greater<sdPair>> pq;  
+    for(auto key_pair: cost[start_airport])
     {
-        if(key_pair.second.getWeight() == -1) continue;
-        distance.insert({key_pair.first, key_pair.second.getWeight()});
-        pred[key_pair.first] = startnode;
+        distance.insert({key_pair.first, infi});
+        // pred[key_pair.first] = start_airport;
         visited[key_pair.first] = 0;
         // cout << key_pair.first << " dis: " << key_pair.second.getWeight();
-    }
-    // for(i=0;i<n;i++)
-    // {
-    //     distance[i]=cost[startnode][i];
-    //     pred[i]=startnode;
-    //     visited[i]=0;
-    // }
-    distance[startnode] = 0.0;
-    visited[startnode] = 1;
-    while(count<total_airpots-1)
+    } // All distance from source are infinite  
+    pq.push(make_pair(start_airport, 0.0)); // push spurce node into the queue  
+    distance[start_airport] = 0; // distance of source will be always 0  
+    while (!pq.empty()) { // While queue is not empty  
+        // Extract the first minimum distance from the priority queue  
+        // vertex label is stored in second of pair (it  
+        // has to be done this way to keep the vertices  
+        // sorted distance  
+        string u = pq.top().first;  
+        pq.pop();  
+        // 'i' is used to get all adjacent vertices of a vertex  
+        list<pair<string, double>>::iterator i;  
+        for (auto i = adjacency_list[u].begin(); i != adjacency_list[u].end(); ++i) {  
+            // Get vertex label and weight of current adjacent  
+            // of u.  
+            Vertex v = (*i).first;  
+            double weight = (*i).second.getWeight();  
+            // If there is shorted path to v through u.  
+            if (!visited[v] &&distance[v] > distance[u] + weight) {  
+                // Updating distance of v  
+                distance[v] = distance[u] + weight;  
+                pq.push(make_pair(v, distance[v]));
+                visited[v] = 1;
+            }  
+        }  
+    }  
+    printf("Vertex \tDistance from Source\n"); // Print the result  
+    for(auto v: getVertices())
     {
-        mindistance=infi;
-    //nextnode gives the node at minimum distance
-        for(auto key: cost)
-        {
-            if(distance.count(key.first) && distance[key.first]<mindistance&&!visited[key.first])
-            {
-                mindistance=distance[key.first];
-                nextnode= key.first;
-            }
-            visited[nextnode]=1;
-            for(auto key: cost)
-            {
-                if(!visited[key.first])
-                {
-                    if(cost[nextnode][key.first].getWeight()!= -1 && (mindistance+cost[nextnode][key.first].getWeight())<distance[key.first])
-                    {
-                        // cout << "min in loop" << mindistance <<" cost" << cost[nextnode][key.first].getWeight() << endl;
-                        distance[key.first] = mindistance+cost[nextnode][key.first].getWeight();
-                        // cout << "dis in loop" << distance[key.first] << endl;
-                        pred[key.first]=nextnode;
-                    }
-                }
-            }
-
-        }
-        count++;
+        if(v != start_airport)printf("%s \t\t %f\n",v.c_str(), distance[v]); // The shortest distance from source  
     }
-    //print the path and distance of each node
-    // for(auto key: cost)
-    // {
-    //     if(key.first!=startnode)
-    //     {
-    //         cout << "\nDistance of node " << key.first << " = " << distance[key.first]<<endl;
-    //         cout << "\nPath= " << key.first;
-    //         Vertex j=key.first;
-    //         do
-    //         {
-    //             j=pred[j];
-    //             cout<< " <-"<< j;
-    //         }while(j!=startnode);
-    //     }
-    // }
-      for(auto key: cost)
-    {
-        if(key.first!=startnode)
-        {
-            cout << "\nDistance of node " << key.first << " = " << distance[key.first]<<endl;
-            cout << "\nPath= " << key.first;
-            // Vertex j=key.first;
-            // do
-            // {
-            //     j=pred[j];
-            //     cout<< " <-"<< j;
-            // }while(j!=startnode);
-        }
-    }
+    cout<<dest_airport << endl;
 }
