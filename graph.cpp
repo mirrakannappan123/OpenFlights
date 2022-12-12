@@ -288,28 +288,25 @@ std::vector<Vertex> Graph::IDDFS(Vertex src, Vertex target, int max_depth) {
 
        }
     }
-   
     return {};
 }
 
 bool Graph::DLS(Vertex src, Vertex target, int limit) {
+    path.push_back(src);
     if(visited.find(src) != visited.end()){
         return false;
     }
     if (src == target)
         return true;
-
     if (limit <= 0)
         return false;
     visited.insert(src);
-    
-    
     std::vector<Vertex> dest_airports;
     for(auto element : adjacency_list[src]){
         dest_airports.push_back(element.first);
     }
     for(size_t i = 0; i < adjacency_list[src].size(); i++){
-        path.push_back(dest_airports[i]);
+
         
         if (DLS(dest_airports[i], target, limit - 1) == true) {
             
