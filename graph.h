@@ -39,7 +39,7 @@ class Graph {
     void snapshot();
     void print() const;
     bool isDirected() const;
-    void dfs();
+    std::vector<Vertex> dfs();
     std::vector<Vertex> dfs(Vertex src_airport);
     void printDFS();
 

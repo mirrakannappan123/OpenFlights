@@ -28,14 +28,8 @@ int main()
     string file1 = "routes.dat.txt";
     string file2 = "airports-extended.dat.txt";
     std::map<string, std::vector<std::pair<std::string, long double>>> map = temp.routes(file1, file2);
-    temp.getGraph().dfs();
- 
-
-
-    //std::vector<Vertex> test = temp.getGraph().getAdjacent(); 
-
-    
-    //std::cout<<temp.getGraph().getAdjacent(664)<<std::endl;
+    std::vector<Vertex> arr =    temp.getGraph().dfs();
+    std::cout<< "arr first element" << arr[0] << std::endl;
     std::cout<<map.size()<<std::endl;
 
     for(auto route: map){

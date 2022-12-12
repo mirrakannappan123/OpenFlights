@@ -248,12 +248,13 @@ void Graph::printDFS(){
   outFile.close();
 }
 
-void Graph::dfs(){
+std::vector<Vertex> Graph::dfs(){
   path.clear();
   visited.clear();
   for(auto airport_pair : adjacency_list){
     dfs(airport_pair.first);
   }
+  return path;
 }
 
 std::vector<Vertex> Graph::dfs(Vertex src_airport){
