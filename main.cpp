@@ -15,22 +15,51 @@ int main()
     std::cout << "This is us parsing through the airport and route files and putting it in a map" <<std::endl;
     string file1 = "routes.dat.txt";
     string file2 = "airports-extended.dat.txt";
-    std::map<string, std::vector<std::pair<std::string, long double>>> map = temp.routes(file1, file2);
-    Graph g(true, true, map);
-    Floyd f(g);
+    //std::map<string, std::vector<std::pair<std::string, long double>>> map = temp.routes(file1, file2);
 
     //int total = 0; //total number of airlines
-    for(auto route: map){
-        for(auto adj: route.second){
-            std::cout << "( Source ID: " << route.first << ",  Destination ID: " << adj.first << ",  How far: " << adj.second << " )" << std::endl;
-            std::vector<std::string> to_return = f.shortestPath(route.first, adj.first);
-            for(size_t i = 0; i < to_return.size(); i++) {
-                std::cout<<to_return[i]<< " ";
-        }
-    }
-    }
+    // for(auto route: map){
+    //     for(auto adj: route.second){
+    //         std::cout << "( Source ID: " << route.first << ",  Destination ID: " << adj.first << ",  How far: " << adj.second << " )" << std::endl;
+    //         std::vector<std::string> to_return = f.shortestPath(route.first, adj.first);
+    //         for(size_t i = 0; i < to_return.size(); i++) {
+    //             std::cout<<to_return[i]<< " ";
+    //     }
+    // }
+    // }
+std::map<string, std::vector<std::pair<std::string, long double>>> map {
+        {"airport0",{{"airport1", 10.5}, {"airport4", 100.5}, {"airport3", 30.5}}},
+        {"airport1", {{"airport0", 10.5}, {"airport2", 50.5}}},
+        {"airport2", {{"airport1", 50.5}, {"airport4", 10.5}, {"airport3", 20.5}}},
+        {"airport3", {{"airport2", 20.5}, {"airport0", 30.5}, {"airport4", 60.5}}},
+        {"airport4", {{"airport3", 60.5}, {"airport2", 10.5}, {"airport0",100.5}}}
+     };
 
- 
+     Graph g = new Graph(true, true);
+
+     g.insertVertex("airport0");
+     g.insertVertex("airport1");
+     g.insertVertex("airport2");
+     g.insertVertex("airport3");
+     g.insertVertex("airport4");
+
+     g.insertEdge("airport0","airport1");
+     g.setEdgeWeight("airport0","airport1", 10.5);
+     g.insertEdge("airport0","airport4");
+     g.setEdgeWeight("airport0","airport4", 100.5);
+     g.insertEdge("airport0","airport3");
+     g.setEdgeWeight("airport0","airport3", 30.5);
+     g.insertEdge("airport1","airport2");
+     g.setEdgeWeight("airport1","airport2", 50.5);
+     g.insertEdge("airport2","airport3");
+     g.setEdgeWeight("airport2","airport3", 20.5);
+     g.insertEdge("airport3","airport4");
+     g.setEdgeWeight("airport3","airport4", 60.5);
+     g.insertEdge("airport2","airport4");
+     g.setEdgeWeight("airport2","airport4", 10.5);
+
+
+     g.dijkstraShortestPathh("airport0", "airport4");
     // cout<<"The total number of airlines are:" << temp.Valid_Airlines(file1)<<endl;
     // cout<<"The total number of airlines that are traversed through map created by parse function are : " << temp.Valid_Airlines(file1)<<endl;
 
