@@ -277,3 +277,53 @@ std::vector<Vertex> Graph::dfs(Vertex src_airport){
   return path;
 }
 
+void Graph::dijkstraShortestPathh(Vertex start_airport, Vertex dest_airport) {
+
+    double infi = numeric_limits<double>::infinity();
+
+    auto cost = getAdjList();
+    map<Vertex,double> distance;
+    map<Vertex, bool> visited; 
+    // map<Vertex, Vertex>pred;
+    priority_queue<sdPair, vector<sdPair>, greater<sdPair>> pq;  
+    for(auto key_pair: cost[start_airport])
+    {
+        distance.insert({key_pair.first, infi});
+        // pred[key_pair.first] = start_airport;
+        visited[key_pair.first] = 0;
+        // cout << key_pair.first << " dis: " << key_pair.second.getWeight();
+    } // All distance from source are infinite  
+    pq.push(make_pair(start_airport, 0.0)); // push spurce node into the queue  
+    distance[start_airport] = 0; // distance of source will be always 0  
+    while (!pq.empty()) { // While queue is not empty  
+        // Extract the first minimum distance from the priority queue  
+        // vertex label is stored in second of pair (it  
+        // has to be done this way to keep the vertices  
+        // sorted distance  
+        string u = pq.top().first;  
+        pq.pop();  
+        // 'i' is used to get all adjacent vertices of a vertex  
+        list<pair<string, double>>::iterator i;  
+        for (auto i = adjacency_list[u].begin(); i != adjacency_list[u].end(); ++i) {  
+            // Get vertex label and weight of current adjacent  
+            // of u.  
+            Vertex v = (*i).first;  
+            double weight = (*i).second.getWeight();  
+            // If there is shorted path to v through u.  
+            if (!visited[v] &&distance[v] > distance[u] + weight) {  
+                // Updating distance of v  
+                distance[v] = distance[u] + weight;  
+                pq.push(make_pair(v, distance[v]));
+                visited[v] = 1;
+            }  
+        }  
+    }  
+    printf("Vertex \tDistance from Source\n"); // Print the result  
+    for(auto v: getVertices())
+    {
+        if(v != start_airport)printf("%s \t\t %f\n",v.c_str(), distance[v]); // The shortest distance from source  
+    }
+    cout<<dest_airport << endl;
+}
+
+

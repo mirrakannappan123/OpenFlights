@@ -2,7 +2,7 @@
 #include <sstream>
 #include <string>
 #include "parse.h"
-
+#include "floyd.h"
 
 using namespace std;
 
@@ -46,6 +46,55 @@ int main()
         break;
     }
     cout << "cout" << endl;
+
+    std::map<string, std::vector<std::pair<std::string, long double>>> mappy {
+        {"airport0",{{"airport1", 10.5}, {"airport4", 100.5}, {"airport3", 30.5}}},
+        {"airport1", {{"airport0", 10.5}, {"airport2", 50.5}}},
+        {"airport2", {{"airport1", 50.5}, {"airport4", 10.5}, {"airport3", 20.5}}},
+        {"airport3", {{"airport2", 20.5}, {"airport0", 30.5}, {"airport4", 60.5}}},
+        {"airport4", {{"airport3", 60.5}, {"airport2", 10.5}, {"airport0",100.5}}}
+     };
+     Graph g = temp.getGraph();
+
+    string airportidtwo;
+    string airportidone;
+    cout << "Type an airport id for the starting location: ";
+    cin >> airportidone;
+    cout << "Type an airport id for the destination location: ";
+    cin >> airportidtwo;
+
+    Floyd f(g);
+    std::vector<string> vec = f.shortestPath(airportidone, airportidtwo);
+    for (string s : vec)
+    {
+        std::cout << s << ", " << std::endl;
+    }
+
+    //  Graph g = new Graph(true, true);
+
+    //  g.insertVertex("airport0");
+    //  g.insertVertex("airport1");
+    //  g.insertVertex("airport2");
+    //  g.insertVertex("airport3");
+    //  g.insertVertex("airport4");
+
+    //  g.insertEdge("airport0","airport1");
+    //  g.setEdgeWeight("airport0","airport1", 10.5);
+    //  g.insertEdge("airport0","airport4");
+    //  g.setEdgeWeight("airport0","airport4", 100.5);
+    //  g.insertEdge("airport0","airport3");
+    //  g.setEdgeWeight("airport0","airport3", 30.5);
+    //  g.insertEdge("airport1","airport2");
+    //  g.setEdgeWeight("airport1","airport2", 50.5);
+    //  g.insertEdge("airport2","airport3");
+    //  g.setEdgeWeight("airport2","airport3", 20.5);
+    //  g.insertEdge("airport3","airport4");
+    //  g.setEdgeWeight("airport3","airport4", 60.5);
+    //  g.insertEdge("airport2","airport4");
+    //  g.setEdgeWeight("airport2","airport4", 10.5);
+
+
+    //  g.dijkstraShortestPathh("airport0", "airport4");
 }
 // #include <iostream>
 // #include <sstream>

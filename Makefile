@@ -4,10 +4,10 @@ CXX_FLAGS=-std=c++20 -Iincludes -gdwarf-4 -fstandalone-debug -O0 -Wall -Wextra -
 exec: bin/exec
 tests: bin/tests
 
-bin/exec: parse.cpp graph.cpp main.cpp latlong.cpp
+bin/exec: parse.cpp graph.cpp main.cpp latlong.cpp floyd.cpp
 	$(CXX) $(CXX_FLAGS) $^ -o $@
 
-bin/tests: parse.cpp graph.cpp main.cpp latlong.cpp
+bin/tests: parse.cpp graph.cpp main.cpp latlong.cpp floyd.cpp
 	$(CXX) $(CXX_FLAGS) $^ -o $@
 
 .DEFAULT_GOAL := exec
