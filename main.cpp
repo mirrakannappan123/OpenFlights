@@ -59,7 +59,13 @@ std::map<string, std::vector<std::pair<std::string, long double>>> map {
      g.setEdgeWeight("airport2","airport4", 10.5);
 
 
-     g.dijkstraShortestPathh("airport0", "airport4");
+     Floyd f(g);
+
+     std::vector<std::string> to_return = f.shortestPath("airport0", "airport4");
+     std::cout<<"Correct Path: ";
+        for(size_t i = 0; i < to_return.size(); i++) {
+                std::cout<<to_return[i]<< " ";
+        }
     // cout<<"The total number of airlines are:" << temp.Valid_Airlines(file1)<<endl;
     // cout<<"The total number of airlines that are traversed through map created by parse function are : " << temp.Valid_Airlines(file1)<<endl;
 
