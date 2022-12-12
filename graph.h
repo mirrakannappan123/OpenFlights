@@ -50,6 +50,9 @@ class Graph {
     void printDFS();
     // vector<Vertex> FindShortestPath(Graph& input) const;
     void dijkstraShortestPathh(Vertex start_airport, Vertex dest_airport);
+    std::vector<Vertex> IDDFS(Vertex src, Vertex target, int max_depth);
+    bool DLS(Vertex src, Vertex target, int limit);
+    void printIDDFS();
 
 
 

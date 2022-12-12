@@ -277,6 +277,62 @@ std::vector<Vertex> Graph::dfs(Vertex src_airport){
   return path;
 }
 
+// Iterative deepening dfs
+std::vector<Vertex> Graph::IDDFS(Vertex src, Vertex target, int max_depth) {
+    // Repeatedly depth-limit search till the maximum depth.
+    path.clear();
+    visited.clear();
+    for (int i = 0; i <= max_depth; i++) {
+       if (DLS(src, target, i) == true) {
+         return path;
+
+       }
+    }
+   
+    return {};
+}
+
+bool Graph::DLS(Vertex src, Vertex target, int limit) {
+    if(visited.find(src) != visited.end()){
+        return false;
+    }
+    if (src == target)
+        return true;
+
+    if (limit <= 0)
+        return false;
+    visited.insert(src);
+    
+    
+    std::vector<Vertex> dest_airports;
+    for(auto element : adjacency_list[src]){
+        dest_airports.push_back(element.first);
+    }
+    for(size_t i = 0; i < adjacency_list[src].size(); i++){
+        path.push_back(dest_airports[i]);
+        
+        if (DLS(dest_airports[i], target, limit - 1) == true) {
+            
+            return true;
+        }
+    }
+    printIDDFS();
+     return false;
+}
+
+void Graph::printIDDFS() {
+    std::ofstream outFile("iddfs_output.txt");
+    outFile << "Generated IDFFS Traversal of airport IDs: " << std::endl;
+    //   std::cout << "path size" << path.size() << std::endl;
+    for(auto itr = path.begin(); itr != path.end(); ++itr) {
+        outFile << *itr << std::endl;
+    }
+    outFile << "End of traversal";
+    outFile.close();
+
+}
+
+
 void Graph::dijkstraShortestPathh(Vertex start_airport, Vertex dest_airport) {
 
     double infi = numeric_limits<double>::infinity();
@@ -284,34 +340,24 @@ void Graph::dijkstraShortestPathh(Vertex start_airport, Vertex dest_airport) {
     auto cost = getAdjList();
     map<Vertex,double> distance;
     map<Vertex, bool> visited; 
-    // map<Vertex, Vertex>pred;
     priority_queue<sdPair, vector<sdPair>, greater<sdPair>> pq;  
     for(auto key_pair: cost[start_airport])
     {
         distance.insert({key_pair.first, infi});
         // pred[key_pair.first] = start_airport;
         visited[key_pair.first] = 0;
-        // cout << key_pair.first << " dis: " << key_pair.second.getWeight();
     } // All distance from source are infinite  
     pq.push(make_pair(start_airport, 0.0)); // push spurce node into the queue  
     distance[start_airport] = 0; // distance of source will be always 0  
     while (!pq.empty()) { // While queue is not empty  
-        // Extract the first minimum distance from the priority queue  
-        // vertex label is stored in second of pair (it  
-        // has to be done this way to keep the vertices  
-        // sorted distance  
         string u = pq.top().first;  
         pq.pop();  
         // 'i' is used to get all adjacent vertices of a vertex  
         list<pair<string, double>>::iterator i;  
         for (auto i = adjacency_list[u].begin(); i != adjacency_list[u].end(); ++i) {  
-            // Get vertex label and weight of current adjacent  
-            // of u.  
             Vertex v = (*i).first;  
             double weight = (*i).second.getWeight();  
-            // If there is shorted path to v through u.  
             if (!visited[v] &&distance[v] > distance[u] + weight) {  
-                // Updating distance of v  
                 distance[v] = distance[u] + weight;  
                 pq.push(make_pair(v, distance[v]));
                 visited[v] = 1;
