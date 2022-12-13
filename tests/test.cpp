@@ -1,5 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
+<<<<<<< HEAD
 #include "/workspaces/225_Final_Project/225_Final_Project/parse.h"
 #include "/workspaces/225_Final_Project/225_Final_Project/floyd.h"
 #include<vector>
@@ -12,17 +13,32 @@ TEST_CASE("Parse to Map Correctly", "[parse]" )
    string airports = "airports-extended.dat.txt";;
     string airlines = "routes.dat.txt";
     std::map<string, std::vector<std::pair<std::string, long double>>> map = temp.routes(airlines, airports);
+=======
+#include "parse.h"
+#include "DFS.h"
+TEST_CASE("Parse to Map Correctly", "[parse]" )
+{
+   Parse temp = Parse();
+   string airports = "225_Final_Project/airports-extended.dat.txt";
+    string airlines = "225_Final_Project/airports-extended.dat.txt";
+    std::map<string, std::vector<std::pair<std::string, long double>>> map = temp.routes(airports, airlines);
+>>>>>>> 27fc9609776a27bbb138ad61ebd9dd0fdadbbed2
     int number = 0;
     for(auto source: map)
     {
         for(auto dest: source.second) number++;
     }
+<<<<<<< HEAD
     REQUIRE(number == temp.Valid_Airlines(airlines,airports));
+=======
+    REQUIRE(number == temp.Valid_Airlines(airports));
+>>>>>>> 27fc9609776a27bbb138ad61ebd9dd0fdadbbed2
 }
 
 TEST_CASE("Create a Graph Correctly", "[graph]" )
 {
    Parse temp = Parse();
+<<<<<<< HEAD
    string airports = "airports-extended.dat.txt";;
     string airlines = "routes.dat.txt";
     std::map<string, std::vector<std::pair<std::string, long double>>> map = temp.routes(airlines, airports);
@@ -37,25 +53,53 @@ TEST_CASE("Create a Graph Correctly", "[graph]" )
             REQUIRE(abs(g.getEdge(src.first, dest_map.first).getWeight() - dest_map.second) < 1.0 / 10000000);
         }
     }
+=======
+   string airports = "225_Final_Project/airports-extended.dat.txt";
+    string airlines = "225_Final_Project/airports-extended.dat.txt";
+    std::map<string, std::vector<std::pair<std::string, long double>>> map = temp.routes(airports, airlines);
+    Graph g(true, true, map);
+    bool same = true;
+    for(auto src: map)
+    {
+        for(auto dest_map: src.second)
+        {
+            if(g.getEdge(src.first, dest_map.first).getWeight() != dest_map.second) same = false;
+        }
+    }
+    REQUIRE(same == true);
+>>>>>>> 27fc9609776a27bbb138ad61ebd9dd0fdadbbed2
 }
 
 TEST_CASE("Test Graph Adjacency List", "[graph]" )
 {
    Parse temp = Parse();
+<<<<<<< HEAD
    string airports = "airports-extended.dat.txt";;
     string airlines = "routes.dat.txt";
     std::map<string, std::vector<std::pair<std::string, long double>>> map = temp.routes(airlines, airports);
     Graph g(true, true, map, temp.Valid_Airlines(airlines,airports));
+=======
+   string airports = "225_Final_Project/airports-extended.dat.txt";
+    string airlines = "225_Final_Project/airports-extended.dat.txt";
+    std::map<string, std::vector<std::pair<std::string, long double>>> map = temp.routes(airports, airlines);
+    Graph g(true, true, map);
+>>>>>>> 27fc9609776a27bbb138ad61ebd9dd0fdadbbed2
     bool same = true;
     for(auto src: map)
     {
         vector<Vertex> adj_lists = g.getAdjacent(src.first);
         if (adj_lists.size() != src.second.size()) same = false;
+<<<<<<< HEAD
         for(int i = 0; i < int(adj_lists.size()); i++)
         {
             auto res = find (adj_lists.begin(), adj_lists.end(), src.second[i].first);
 //checking if the variable 'res' has index of 'last' or not
             if (res == adj_lists.end())
+=======
+        for(unsigned i = 0; i < adj_lists.size(); i++)
+        {
+            if(adj_lists[i] != src.second[i].first)
+>>>>>>> 27fc9609776a27bbb138ad61ebd9dd0fdadbbed2
             {
                 same = false;
             }
@@ -65,9 +109,14 @@ TEST_CASE("Test Graph Adjacency List", "[graph]" )
     REQUIRE(same == true);
 }
 
+<<<<<<< HEAD
 TEST_CASE("Finds Shortest Path Using Floyd Algorithm", "[Floyd]" )
 {
    Graph g = new Graph(true, true); 
+=======
+TEST_CASE("Testing DFS_path", "[DFS]") {
+    Graph g = new Graph(true, true); 
+>>>>>>> 27fc9609776a27bbb138ad61ebd9dd0fdadbbed2
 
    Vertex v1 = Vertex("1");
    Vertex v2 = Vertex("2");
@@ -101,6 +150,7 @@ TEST_CASE("Finds Shortest Path Using Floyd Algorithm", "[Floyd]" )
    g.setEdgeWeight(v6, v3, 2);
    g.insertEdge(v2, v3);
    g.setEdgeWeight(v2, v3, 10);
+<<<<<<< HEAD
 
    Floyd f(g);
    std::vector<std::string> to_test = f.shortestPath(v1, v5);
@@ -111,6 +161,20 @@ TEST_CASE("Finds Shortest Path Using Floyd Algorithm", "[Floyd]" )
     REQUIRE(to_test[3] == "5");
 }
 TEST_CASE("Finds Shortest Path Using Floyd Algorithm: No Path", "[Floyd]" )
+=======
+   std::vector<std::string> to_test = g.dfs();
+    REQUIRE(to_test.size() == 6);
+    REQUIRE(to_test[0] == "6");
+    REQUIRE(to_test[1] == "3");
+    REQUIRE(to_test[2] == "2");
+    REQUIRE(to_test[3] == "4");
+    REQUIRE(to_test[4] == "5");
+    REQUIRE(to_test[5] == "1");
+    
+}
+
+TEST_CASE("Testing size path", "[DFS_PATH]" )
+>>>>>>> 27fc9609776a27bbb138ad61ebd9dd0fdadbbed2
 {
    Graph g = new Graph(true, true); 
 
@@ -149,6 +213,7 @@ TEST_CASE("Finds Shortest Path Using Floyd Algorithm: No Path", "[Floyd]" )
    g.insertEdge(v2, v3);
    g.setEdgeWeight(v2, v3, 10);
 
+<<<<<<< HEAD
    Floyd f(g);
    std::vector<std::string> to_test = f.shortestPath(v1, v7);
     REQUIRE(to_test.size() == 1);
@@ -197,6 +262,112 @@ TEST_CASE("Finding Shortest Path for Data Graph", "[OpenFlight]" )
     {
            REQUIRE(vg[i] == vf[i]);
     }
+=======
+   std::vector<std::string> to_test = g.dfs();
+    REQUIRE(to_test.size() == 7);
+    REQUIRE(to_test[0] == "7");
+    REQUIRE(to_test[1] == "6");
+    REQUIRE(to_test[2] == "3");
+    REQUIRE(to_test[3] == "2");
+    REQUIRE(to_test[4] == "4");
+    REQUIRE(to_test[5] == "5");
+    REQUIRE(to_test[6] == "1");
+}
+
+
+TEST_CASE("Testing IDDFS ", "[IDDFS]" )
+{
+    Graph g = new Graph(true, true); 
+
+   Vertex v1 = Vertex("1");
+   Vertex v2 = Vertex("2");
+   Vertex v3 = Vertex("3");
+   Vertex v4 = Vertex("4");
+   Vertex v5 = Vertex("5");
+   Vertex v6 = Vertex("6");
+
+   g.insertVertex(v1);
+   g.insertVertex(v2);
+   g.insertVertex(v3);
+   g.insertVertex(v4);
+   g.insertVertex(v5);
+   g.insertVertex(v6);
+
+   g.insertEdge(v1, v3);
+   g.setEdgeWeight(v1,v3, 9);
+   g.insertEdge(v1, v2);
+   g.setEdgeWeight(v1, v2, 7);
+   g.insertEdge(v2, v4);
+   g.setEdgeWeight(v2, v4, 15);
+   g.insertEdge(v3, v4);
+   g.setEdgeWeight(v3, v4, 11);
+   g.insertEdge(v4, v5);
+   g.setEdgeWeight(v4, v5, 6);
+   g.insertEdge(v5, v6);
+   g.setEdgeWeight(v5, v6, 9);
+   g.insertEdge(v6, v1);
+   g.setEdgeWeight(v6, v1, 14);
+   g.insertEdge(v6, v3);
+   g.setEdgeWeight(v6, v3, 2);
+   g.insertEdge(v2, v3);
+   g.setEdgeWeight(v2, v3, 10);
+
+    Vertex target = v3;
+    Vertex src = v2;
+    int maxDepth = 3;
+    std::vector<Vertex> arr = g.IDDFS(src, target, maxDepth);
+    REQUIRE(arr.size() == 1);
+    REQUIRE(arr[0] == "2");
+}
+
+
+TEST_CASE("Testing IDDFS_2 ", "[IDDFS_2]" )
+{
+  Graph g = new Graph(true, true); 
+
+   Vertex v1 = Vertex("1");
+   Vertex v2 = Vertex("2");
+   Vertex v3 = Vertex("3");
+   Vertex v4 = Vertex("4");
+   Vertex v5 = Vertex("5");
+   Vertex v6 = Vertex("6");
+   Vertex v7 = Vertex("7");
+
+   g.insertVertex(v1);
+   g.insertVertex(v2);
+   g.insertVertex(v3);
+   g.insertVertex(v4);
+   g.insertVertex(v5);
+   g.insertVertex(v6);
+   g.insertVertex(v7);
+
+   g.insertEdge(v1, v3);
+   g.setEdgeWeight(v1,v3, 9);
+   g.insertEdge(v1, v2);
+   g.setEdgeWeight(v1, v2, 7);
+   g.insertEdge(v2, v4);
+   g.setEdgeWeight(v2, v4, 15);
+   g.insertEdge(v3, v4);
+   g.setEdgeWeight(v3, v4, 11);
+   g.insertEdge(v4, v5);
+   g.setEdgeWeight(v4, v5, 6);
+   g.insertEdge(v5, v6);
+   g.setEdgeWeight(v5, v6, 9);
+   g.insertEdge(v6, v1);
+   g.setEdgeWeight(v6, v1, 14);
+   g.insertEdge(v6, v3);
+   g.setEdgeWeight(v6, v3, 2);
+   g.insertEdge(v2, v3);
+   g.setEdgeWeight(v2, v3, 10);
+
+
+    Vertex target = v1;
+    Vertex src = v6;
+    int maxDepth = 3;
+    std::vector<Vertex> arr = g.IDDFS(src, target, maxDepth);
+    REQUIRE(arr.size() == 1);
+    REQUIRE(arr[0] == "6");
+>>>>>>> 27fc9609776a27bbb138ad61ebd9dd0fdadbbed2
 }
 
 

@@ -44,5 +44,9 @@ long double distance(long double lat1, long double long1,
  
     return ans;
 }
+<<<<<<< HEAD
  
 // Driver Code
+=======
+ 
+>>>>>>> 27fc9609776a27bbb138ad61ebd9dd0fdadbbed2

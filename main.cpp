@@ -49,6 +49,8 @@ int main()
     g.printPath(g.dijkstraShortestPath(src, dest));
     Floyd f(g);
     g.printPath({f.shortestPath(src, dest),0});
+    std::vector<Vertex> arr =    temp.getGraph().dfs();
+    temp.getGraph().IDDFS(src, dest, 3);
  
 }
 

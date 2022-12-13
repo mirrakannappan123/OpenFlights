@@ -41,6 +41,7 @@ class Parse {
     Graph graph; 
     
 };
+<<<<<<< HEAD
  //std::map<std::string, std::vector<std::pair<std::string, unsigned>>> map;
 
 // struct Node
@@ -78,3 +79,5 @@ class Parse {
     
 // };
 // void printList(Node* ptr, int i);
+=======
+>>>>>>> 27fc9609776a27bbb138ad61ebd9dd0fdadbbed2
