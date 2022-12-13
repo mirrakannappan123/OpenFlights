@@ -11,7 +11,7 @@ Our project looks that OpenFlight data set from: https://openflights.org/data.ht
 
 Here is our presentation video: https://youtu.be/uBApWAYBcTI
 
-To achieve this goal we implemented the Floyd-Warshall Algorithm, the Dijkstra Alogrithm, iterative DFS, and DFS to traverse and output the data.
+To achieve this goal we implemented the Floyd-Warshall Algorithm, the Dijkstra Alogrithm, iterative deepening DFS, and DFS to traverse and output the data.
 
 ## Usage(Running our code)
 For the test cases, execute the following command: 
@@ -19,11 +19,6 @@ For the test cases, execute the following command:
     $ make tests
     $ ./bin/tests - runs all the test cases 
     $ ./bin/tests "test case name" - runs a selected test case
-
-To actually find out the shortest distance between two airports, run the following commands: 
-    $ make exec
-    $ ./bin/exec
-    $
 
 
 ## Organization 
@@ -43,3 +38,11 @@ This file calulates the distance given the latitutde and longitude.
 
 ### main.cpp
 This file is main executable file that will allow the user to input the two airport ID's to find the shortest path. 
+
+## Usage(Running our code)
+For running the program, execute the following command: 
+
+    $ make exec
+    $ ./bin/exec - runs main.cpp
+    
+You will be prompted to enter the source Airport ID and the Destination Airport ID which will run the algorithms.
