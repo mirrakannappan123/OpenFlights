@@ -4,7 +4,7 @@
 Floyd::Floyd(Graph g) {
     double inf = 1e9;
     std::vector<Vertex> ver = g.getVertices();
-    std::cout<<ver.size()<<std::endl;
+    // std::cout<<ver.size()<<std::endl;
 
     distance = vector<vector<double>>(ver.size(), vector<double>(ver.size(), inf));
     path = vector<vector<std::string>>(ver.size(), vector<std::string>(ver.size(), "-1"));
@@ -18,7 +18,7 @@ Floyd::Floyd(Graph g) {
              }
          }
         for(size_t k = 0; k < ver.size(); k++) {
-            std::cout<<ver[i] << " " << ver[k]<<std::endl;
+            // std::cout<<ver[i] << " " << ver[k]<<std::endl;
             if (g.assertEdgeExists(ver[i], ver[k], " ")) {
                 distance[i][k] = g.getEdgeWeight(ver[i], ver[k]);
                 path[i][k] = ver[k];

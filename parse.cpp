@@ -180,10 +180,10 @@ std::map<string, std::vector<std::pair<std::string, long double>>> Parse::routes
         // cout<<latlong[source_ID].at(1)<< endl;
         // cout<<latlong[dest_Id].at(0) << endl;
         // cout<< latlong[dest_Id].at(1)<<endl;
-        unsigned int source_lat = latlong[source_ID].at(0);
-        unsigned int source_long = latlong[source_ID].at(1);
-        unsigned int dest_lat = latlong[dest_Id].at(0);
-        unsigned int dest_long = latlong[dest_Id].at(1);
+        long double source_lat = latlong[source_ID].at(0);
+        long double source_long = latlong[source_ID].at(1);
+        long double dest_lat = latlong[dest_Id].at(0);
+        long double dest_long = latlong[dest_Id].at(1);
 
         long double dis = distance(source_lat,source_long, dest_lat, dest_long);
 
@@ -197,40 +197,104 @@ std::map<string, std::vector<std::pair<std::string, long double>>> Parse::routes
         }else
         {
             //make sure that there is no two same destination airport
-            auto it = find(related.begin(),related.end(), dest);
-                if(it == related.end())
+            bool existed = false;
+            for(auto ele: mappy[source_ID])
+            {
+                if(ele.first == dest.first)
                 {
-                    mappy[source_ID].push_back(dest);
+                   existed = true;
+                   break;
                 }
+            }
+            if(!existed) mappy[source_ID].push_back(dest);
         } 
     }
     return mappy;
 }
-
-int Parse::Valid_Airlines(string filename)
-{
-    int total = 0;
+int Parse::Valid_Airlines(string filename, string filename1) {
     ifstream ifs(filename);
-    for(string routes; std::getline(ifs,routes); routes = " ")
-    {
+    string source_ID, dest_Id, temp; 
+    std::map<string, std::vector<std::pair<std::string, long double>>> mappy;
+    std::map<std::string, std::vector<long double>> latlong = parse(filename1);
+    int total = 0;
+    // cout << sizeof(latlong)<< endl;
+    // for(int i = 1; i <= 14111; i++ ){
+    //     string a = to_string(i);
+    //     if(latlong.count(a)) cout << a << ", " <<latlong[a][0]<< endl;
+    // }
+    for(string routes; std::getline(ifs,routes); routes = " ") {
+        std::vector<std::pair<std::string, long double>> related;
         int count = 0; 
         stringstream info(routes);
-        string temp, source_ID, dest_ID;
         while(getline(info, temp, ',')) {
-            
+    
             if(count == 3 ) {
                 source_ID = temp;
             }
             if(count == 5) {
-                dest_ID = temp;
+                dest_Id = temp;
             }
             count++;
         }
-        if(dest_ID == "\\N" || source_ID == "\\N") continue;
-        total++;
+        if(dest_Id == "\\N" || source_ID == "\\N") continue;
+     
+
+        long double dis = 0.0;
+
+        std::pair<std::string, long double> dest = make_pair(dest_Id, dis);
+        // cout << dest.first << ", " << dest.second << endl;
+        if(!mappy.count(source_ID))
+        {
+            related.push_back(dest);
+            mappy.insert({source_ID, related});
+            // cout << mappy[source_ID][0].first << endl;
+            total++;
+        }else
+        {
+            //make sure that there is no two same destination airport
+            bool existed = false;
+            for(auto ele: mappy[source_ID])
+            {
+                if(ele.first == dest.first)
+                {
+                   existed = true;
+                   break;
+                }
+            }
+            if(!existed)
+            {
+                mappy[source_ID].push_back(dest);
+                total++;
+            }
+        } 
     }
     return total;
 }
+// int Parse::Valid_Airlines(string filename)
+// {
+//     int total = 0;
+//     ifstream ifs(filename);
+//     for(string routes; std::getline(ifs,routes); routes = " ")
+//     {
+//         int count = 0; 
+//         stringstream info(routes);
+//         string temp, source_ID, dest_ID;
+//         while(getline(info, temp, ',')) {
+            
+//             if(count == 3 ) {
+//                 source_ID = temp;
+//             }
+//             if(count == 5) {
+//                 dest_ID = temp;
+//             }
+//             count++;
+//         }
+//         if(dest_ID == "\\N" || source_ID == "\\N") continue;
+        
+//         total++;
+//     }
+//     return total;
+// }
 long double Parse::toRadians(const long double ree)
 {
     // cmath library in C++

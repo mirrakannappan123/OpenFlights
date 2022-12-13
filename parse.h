@@ -24,7 +24,8 @@ class Parse {
     // std::map<string, std::vector<std::pair<std::string, long double>>> routes(string filename, string filename1);
     std::map<std::string, std::vector<long double>> parse(const string& filename);
     std::map<string, std::vector<std::pair<std::string, long double>>> routes(string filename, string filename1);
-    int Valid_Airlines(string filename);
+    int Valid_Airlines(string filename, string filename1);
+    // int Valid_Airlines(string filename);
     string test();
     Parse();
     Graph getGraph();
