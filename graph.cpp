@@ -305,16 +305,14 @@ bool Graph::DLS(Vertex src, Vertex target, int limit) {
     for(auto element : adjacency_list[src]){
         dest_airports.push_back(element.first);
     }
-    for(size_t i = 0; i < adjacency_list[src].size(); i++){
-
-        
+    for(size_t i = 0; i < adjacency_list[src].size(); i++){   
         if (DLS(dest_airports[i], target, limit - 1) == true) {
             
             return true;
         }
     }
     printIDDFS();
-     return false;
+    return false;
 }
 
 void Graph::printIDDFS() {

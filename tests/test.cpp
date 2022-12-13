@@ -157,7 +157,53 @@ TEST_CASE("Testing size path", "[DFS_PATH]" )
 
 TEST_CASE("Testing IDDFS ", "[IDDFS]" )
 {
-   Graph g = new Graph(true, true); 
+    Graph g = new Graph(true, true); 
+
+   Vertex v1 = Vertex("1");
+   Vertex v2 = Vertex("2");
+   Vertex v3 = Vertex("3");
+   Vertex v4 = Vertex("4");
+   Vertex v5 = Vertex("5");
+   Vertex v6 = Vertex("6");
+
+   g.insertVertex(v1);
+   g.insertVertex(v2);
+   g.insertVertex(v3);
+   g.insertVertex(v4);
+   g.insertVertex(v5);
+   g.insertVertex(v6);
+
+   g.insertEdge(v1, v3);
+   g.setEdgeWeight(v1,v3, 9);
+   g.insertEdge(v1, v2);
+   g.setEdgeWeight(v1, v2, 7);
+   g.insertEdge(v2, v4);
+   g.setEdgeWeight(v2, v4, 15);
+   g.insertEdge(v3, v4);
+   g.setEdgeWeight(v3, v4, 11);
+   g.insertEdge(v4, v5);
+   g.setEdgeWeight(v4, v5, 6);
+   g.insertEdge(v5, v6);
+   g.setEdgeWeight(v5, v6, 9);
+   g.insertEdge(v6, v1);
+   g.setEdgeWeight(v6, v1, 14);
+   g.insertEdge(v6, v3);
+   g.setEdgeWeight(v6, v3, 2);
+   g.insertEdge(v2, v3);
+   g.setEdgeWeight(v2, v3, 10);
+
+    Vertex target = v3;
+    Vertex src = v2;
+    int maxDepth = 3;
+    std::vector<Vertex> arr = g.IDDFS(src, target, maxDepth);
+    REQUIRE(arr.size() == 1);
+    REQUIRE(arr[0] == "2");
+}
+
+
+TEST_CASE("Testing IDDFS_2 ", "[IDDFS_2]" )
+{
+  Graph g = new Graph(true, true); 
 
    Vertex v1 = Vertex("1");
    Vertex v2 = Vertex("2");
@@ -194,12 +240,13 @@ TEST_CASE("Testing IDDFS ", "[IDDFS]" )
    g.insertEdge(v2, v3);
    g.setEdgeWeight(v2, v3, 10);
 
-    Vertex target = v3;
-    Vertex src = v2;
+
+    Vertex target = v1;
+    Vertex src = v6;
     int maxDepth = 3;
     std::vector<Vertex> arr = g.IDDFS(src, target, maxDepth);
     REQUIRE(arr.size() == 1);
-    REQUIRE(arr[0] == "2");
+    REQUIRE(arr[0] == "6");
 }
 
 
