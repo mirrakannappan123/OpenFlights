@@ -13,7 +13,7 @@ Here is our presentation video: https://youtu.be/uBApWAYBcTI
 
 To achieve this goal we implemented the Floyd-Warshall Algorithm, the Dijkstra Alogrithm, iterative deepening DFS, and DFS to traverse and output the data.
 
-## Usage(Running our code)
+## Running the Tests
 For the test cases, execute the following command: 
 
     $ make tests
@@ -39,7 +39,7 @@ This file calulates the distance given the latitutde and longitude.
 ### main.cpp
 This file is main executable file that will allow the user to input the two airport ID's to find the shortest path. 
 
-## Usage(Running our code)
+## Usage (Running our code)
 For running the program, execute the following command: 
 
     $ make exec
