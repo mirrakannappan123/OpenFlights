@@ -46,17 +46,3 @@ long double distance(long double lat1, long double long1,
 }
  
 // Driver Code
-int main()
-{
-    long double lat1 = 53.32055555555556;
-    long double long1 = -1.7297222222222221;
-    long double lat2 = 53.31861111111111;
-    long double long2 = -1.6997222222222223;
-     
-    // call the distance function
-    cout << setprecision(15) << fixed;
-    cout << distance(lat1, long1,
-                     lat2, long2) << " K.M";
- 
-    return 0;
-}
