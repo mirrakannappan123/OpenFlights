@@ -23,9 +23,9 @@ For the test cases, execute the following command:
 
 ## Organization 
 ### Graph.h and Graph.cpp
-This file assists in creating the weighted and directed graph used in main.cpp and in our algorithms. This file also contains our iterative DFS, DFS, and Djistraka Algorithm. 
+This file assists in creating the weighted and directed graph used in main.cpp and in our algorithms. This file also contains our iterative deepening DFS(IDDFS), DFS, and Djistraka Algorithm. 
 
-The Djstrka Algorithm outputs the shortest path and the distance it from the source to the destination. While DFS prints which node it traversed through in the DFS.output.txt file. 
+The Djstrka Algorithm outputs the shortest path and the distance it from the source to the destination. While DFS prints which node it traversed through in the dfs_output.txt file and IDDFS prints which node it traversed through in the iddfs_output.txt file. 
 
 ### Floyd.h and Floyd.cpp
 This file is dedicated to implementing the Floyd-Warshall algorithm. To Note: the run time for the algorithm is O(N^3) so it takes a really long time to output the path. This algorithm outputs a vector of airport ID's which ultimately is the shortest path. 
