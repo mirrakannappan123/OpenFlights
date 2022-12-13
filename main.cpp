@@ -38,19 +38,24 @@ int main()
         for(auto adj: adj_lists) cout << adj << ", ";
         cout << "})" << endl;
     }
-    cout << "-------------------------------------------------------------------------"<< endl;
-    cout << "Find Shortest Path"<< endl;
-  
+
     Vertex src = "", dest = "";
     cout << "Enter your source airport ID below:" << endl << "> ";
     cin >> src;
     cout << "Enter your dest airport ID below:" << endl << "> ";
     cin>>dest;
+
+    cout << "-------------------------------------------------------------------------"<< endl;
+    cout << "DFS traversal and IDDFS traversal results shown in dfs_output.txt and iddfs_output.txt:"<< endl;
+    std::vector<Vertex> arr =    temp.getGraph().dfs();
+    temp.getGraph().IDDFS(src, dest, 3);
+
+    cout << "-------------------------------------------------------------------------"<< endl;
+    cout << "Find Shortest Path"<< endl;
+  
     g.printPath(g.dijkstraShortestPath(src, dest));
     Floyd f(g);
     g.printPath({f.shortestPath(src, dest),0});
-    std::vector<Vertex> arr =    temp.getGraph().dfs();
-    temp.getGraph().IDDFS(src, dest, 3);
  
 }
 

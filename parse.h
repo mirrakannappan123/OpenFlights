@@ -41,43 +41,4 @@ class Parse {
     Graph graph; 
     
 };
-<<<<<<< HEAD
- //std::map<std::string, std::vector<std::pair<std::string, unsigned>>> map;
 
-// struct Node
-// {
-//     int val, cost;
-//     Node* next;
-// };
- 
-// // Data structure to store a graph edge
-// struct Edge {
-//     int src, dest, weight;
-// };
- 
-// class Graph
-// {
-//     // Function to allocate a new node for the adjacency list
-//     Node* getAdjListNode(int value, int weight, Node* head);
-   
- 
-//     int N;    // total number of nodes in the graph
- 
-//     public:
-    
-//         // An array of pointers to Node to represent the
-//         // adjacency list
-//         Node **head;
-    
-//         // Constructor
-//         Graph(Edge edges[], int n, int N);
-        
-    
-//         // Destructor
-//         ~Graph();
-
-    
-// };
-// void printList(Node* ptr, int i);
-=======
->>>>>>> 27fc9609776a27bbb138ad61ebd9dd0fdadbbed2

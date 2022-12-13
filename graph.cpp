@@ -10,7 +10,6 @@ Graph::Graph(bool weighted, bool directed){
     weight= weighted; 
     direct = directed; 
 }
-<<<<<<< HEAD
 Graph::Graph(bool weighted, bool directed, map<string,vector<pair<string, long double>>> map, int total_airlines)
 {
     weight= weighted; 
@@ -43,8 +42,6 @@ Graph::Graph(bool weighted, bool directed, map<string,vector<pair<string, long d
         }
     }
 }
-=======
->>>>>>> 27fc9609776a27bbb138ad61ebd9dd0fdadbbed2
 
 vector<Vertex> Graph::getAdjacent(Vertex source) const {
     auto lookup = adjacency_list.find(source);
@@ -76,11 +73,7 @@ vector<Vertex> Graph::getVertices() const {
 }
 
 Edge Graph::getEdge(Vertex source, Vertex destination) const {
-<<<<<<< HEAD
     if(assertEdgeExists(source, destination,"") == false)
-=======
-    if(assertEdgeExists(source, destination, __func__) == false)
->>>>>>> 27fc9609776a27bbb138ad61ebd9dd0fdadbbed2
         return Edge();
     Edge ret = adjacency_list[source][destination];
     return ret;
@@ -115,26 +108,6 @@ vector<Edge> Graph::getEdges() const {
     return ret;
 }
 
-// Edge Graph::setEdgeLabel(Vertex source, Vertex destination, string label) {
-//     if (assertEdgeExists(source, destination, __func__) == false)
-//         return InvalidEdge;
-//     Edge e = adjacency_list[source][destination];
-//     Edge new_edge(source, destination, e.getWeight(), label);
-//     adjacency_list[source][destination] = new_edge;
-
-//     if(!directed)
-//     {
-//         Edge new_edge_reverse(destination,source, e.getWeight(), label);
-//         adjacency_list[destination][source] = new_edge_reverse;
-//     }
-//     return new_edge;
-// }
-
-// string Graph::getEdgeLabel(Vertex source, Vertex destination) {
-//     if(assertEdgeExists(source, destination, __func__) == false)
-//         return InvalidLabel;
-//     return adjacency_list[source][destination].getLabel();
-// }
 
 double Graph::getEdgeWeight(Vertex source, Vertex destination) const {
     if (!weight)
@@ -173,13 +146,8 @@ void Graph::insertEdge(Vertex source, Vertex destination) {
 }
 
 void Graph::setEdgeWeight(Vertex source, Vertex destination, double weight) {
-<<<<<<< HEAD
     if (assertEdgeExists(source, destination, "") == false)
         return;
-=======
-    if (assertEdgeExists(source, destination, __func__) == false)
-        return;;
->>>>>>> 27fc9609776a27bbb138ad61ebd9dd0fdadbbed2
     Edge e = adjacency_list[source][destination];
     //std::cout << "setting weight: " << weight << std::endl;
     Edge new_edge(source, destination, weight, e.getLabel());
@@ -210,13 +178,8 @@ bool Graph::assertEdgeExists(Vertex source, Vertex destination, string functionN
         return false;
     if(adjacency_list[source].find(destination)== adjacency_list[source].end())
     {
-<<<<<<< HEAD
         // if (functionName != "")
         //     error(functionName + " called on nonexistent edge " + source + " -> " + destination);
-=======
-        if (functionName != "")
-            error(functionName + " called on nonexistent edge " + source + " -> " + destination);
->>>>>>> 27fc9609776a27bbb138ad61ebd9dd0fdadbbed2
         return false;
     }
 
@@ -226,13 +189,8 @@ bool Graph::assertEdgeExists(Vertex source, Vertex destination, string functionN
             return false;
         if(adjacency_list[destination].find(source)== adjacency_list[destination].end())
         {
-<<<<<<< HEAD
             // if (functionName != "")
             //     error(functionName + " called on nonexistent edge " + destination + " -> " + source);
-=======
-            if (functionName != "")
-                error(functionName + " called on nonexistent edge " + destination + " -> " + source);
->>>>>>> 27fc9609776a27bbb138ad61ebd9dd0fdadbbed2
             return false;
         }
     }
@@ -243,27 +201,6 @@ void Graph::error(string message) const {
     cerr << "\033[1;31m[Graph Error]\033[0m " + message << endl;
 }
 
-<<<<<<< HEAD
-=======
-void Graph::initSnapshot(string title)
-{
-    picNum = 0;
-    picName = title;
-}
-
-/**
- * Saves a snapshot of the graph to file.
- * initSnapshot() must be run first.
- */
-void Graph::snapshot()
-{
-    std::stringstream ss;
-    ss << picNum;
-    string newName = picName + ss.str();
-    //savePNG(newName);
-    ++picNum;
-}
->>>>>>> 27fc9609776a27bbb138ad61ebd9dd0fdadbbed2
 
 /**
  * Prints the graph to stdout.
@@ -289,7 +226,6 @@ void Graph::print() const
         cout << endl;
     }
 }
-<<<<<<< HEAD
 void Graph::printPath(Path input) const
 {
     vector<Vertex> temp = input.path_;
@@ -324,75 +260,7 @@ void Graph::addEdge(int u, int v, double w) // add an edge
         adj[u].push_back(make_pair(v, w)); // make a pair of vertex and weight and // add it to the list  
         adj[v].push_back(make_pair(u, w)); // add oppositely by making a pair of weight and vertex  
     }  
-}  
-
-Path Graph::dijkstraShortestPath(Vertex start_airport, Vertex dest_airport) {
-    int src = VtIforDij[start_airport];
-    int dest = VtIforDij[dest_airport];
-    Path output;
-    if(!adjacency_list.count(start_airport) || !adjacency_list.count(dest_airport))
-    {
-        output.path_ = vector<Vertex>{};
-        output.dist_ = 0.0; 
-        return output;
-    }
-
-    vector<int>pred(adjacency_list.size(), src);
-
-    priority_queue<diPair, vector<diPair>, greater<diPair>> pq;  
-    vector<double> dist(adjacency_list.size(), INF); // All distance from source are infinite  
-    pq.push(make_pair(0.0, src)); // push spurce node into the queue  
-    dist[src] = 0.0; // distance of source will be always 0 
-    
-    while (!pq.empty()) 
-    { // While queue is not empty  
-        // Extract the first minimum distance from the priority queue  
-        // vertex label is stored in second of pair (it  
-        // has to be done this way to keep the vertices  
-        // sorted distance 
-        int u = pq.top().second;  
-        pq.pop();  
-        // 'i' is used to get all adjacent vertices of a vertex  
-        list<pair<int, double>>::iterator i;  
-        // cout << "REACHLINE" << endl;
-        for (i = adj[u].begin(); i != adj[u].end(); ++i) {  
-            // Get vertex label and weigh of current adjacent  
-            // of u.  
-            int v = (*i).first;  
-            double weight = (*i).second;  
-            // cout << v << " " << weight << endl;
-            // If there is shorted path to v through u.  
-            if (dist[v] > dist[u] + weight) {  
-                // Updating distance of v  
-                dist[v] = dist[u] + weight;  
-                pq.push(make_pair(dist[v], v)); 
-                pred[v]=u; 
-            }  
-        }  
-    }
-    
-    stack<Vertex> temp;
-    output.dist_= dist[dest];  
-    int j = dest;
-    temp.push(ItVforDij[j]);
-    while(j != src)
-    {
-        j = pred[j];
-        temp.push(ItVforDij[j]);
-    }
-    while(!temp.empty())
-    {
-        output.path_.push_back(temp.top());
-        temp.pop();
-    }
-    return output;
-}
-=======
-
-std::unordered_map<Vertex, std::unordered_map<Vertex, Edge>> Graph::getAdjList() {
-    return adjacency_list;
-}
-
+} 
 void Graph::printDFS(){
   std::ofstream outFile("dfs_output.txt");
   outFile << "Generated DFS Traversal of airport IDs: " << std::endl;
@@ -484,44 +352,64 @@ void Graph::printIDDFS() {
 }
 
 
-void Graph::dijkstraShortestPathh(Vertex start_airport, Vertex dest_airport) {
-
-    double infi = numeric_limits<double>::infinity();
-
-    auto cost = getAdjList();
-    map<Vertex,double> distance;
-    map<Vertex, bool> visited; 
-    priority_queue<sdPair, vector<sdPair>, greater<sdPair>> pq;  
-    for(auto key_pair: cost[start_airport])
+Path Graph::dijkstraShortestPath(Vertex start_airport, Vertex dest_airport) {
+    int src = VtIforDij[start_airport];
+    int dest = VtIforDij[dest_airport];
+    Path output;
+    if(!adjacency_list.count(start_airport) || !adjacency_list.count(dest_airport))
     {
-        distance.insert({key_pair.first, infi});
-        // pred[key_pair.first] = start_airport;
-        visited[key_pair.first] = 0;
-    } // All distance from source are infinite  
-    pq.push(make_pair(start_airport, 0.0)); // push spurce node into the queue  
-    distance[start_airport] = 0; // distance of source will be always 0  
-    while (!pq.empty()) { // While queue is not empty  
-        string u = pq.top().first;  
+        output.path_ = vector<Vertex>{};
+        output.dist_ = 0.0; 
+        return output;
+    }
+
+    vector<int>pred(adjacency_list.size(), src);
+
+    priority_queue<diPair, vector<diPair>, greater<diPair>> pq;  
+    vector<double> dist(adjacency_list.size(), INF); // All distance from source are infinite  
+    pq.push(make_pair(0.0, src)); // push spurce node into the queue  
+    dist[src] = 0.0; // distance of source will be always 0 
+    
+    while (!pq.empty()) 
+    { // While queue is not empty  
+        // Extract the first minimum distance from the priority queue  
+        // vertex label is stored in second of pair (it  
+        // has to be done this way to keep the vertices  
+        // sorted distance 
+        int u = pq.top().second;  
         pq.pop();  
         // 'i' is used to get all adjacent vertices of a vertex  
-        list<pair<string, double>>::iterator i;  
-        for (auto i = adjacency_list[u].begin(); i != adjacency_list[u].end(); ++i) {  
-            Vertex v = (*i).first;  
-            double weight = (*i).second.getWeight();  
-            if (!visited[v] &&distance[v] > distance[u] + weight) {  
-                distance[v] = distance[u] + weight;  
-                pq.push(make_pair(v, distance[v]));
-                visited[v] = 1;
+        list<pair<int, double>>::iterator i;  
+        // cout << "REACHLINE" << endl;
+        for (i = adj[u].begin(); i != adj[u].end(); ++i) {  
+            // Get vertex label and weigh of current adjacent  
+            // of u.  
+            int v = (*i).first;  
+            double weight = (*i).second;  
+            // cout << v << " " << weight << endl;
+            // If there is shorted path to v through u.  
+            if (dist[v] > dist[u] + weight) {  
+                // Updating distance of v  
+                dist[v] = dist[u] + weight;  
+                pq.push(make_pair(dist[v], v)); 
+                pred[v]=u; 
             }  
         }  
-    }  
-    printf("Vertex \tDistance from Source\n"); // Print the result  
-    for(auto v: getVertices())
-    {
-        if(v != start_airport)printf("%s \t\t %f\n",v.c_str(), distance[v]); // The shortest distance from source  
     }
-    cout<<dest_airport << endl;
+    
+    stack<Vertex> temp;
+    output.dist_= dist[dest];  
+    int j = dest;
+    temp.push(ItVforDij[j]);
+    while(j != src)
+    {
+        j = pred[j];
+        temp.push(ItVforDij[j]);
+    }
+    while(!temp.empty())
+    {
+        output.path_.push_back(temp.top());
+        temp.pop();
+    }
+    return output;
 }
-
-
->>>>>>> 27fc9609776a27bbb138ad61ebd9dd0fdadbbed2
