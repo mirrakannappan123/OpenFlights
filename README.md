@@ -46,4 +46,4 @@ For running the program, execute the following command:
     $ ./bin/exec - runs main.cpp
     
 You will be prompted to enter the source Airport ID and the Destination Airport ID which will run the algorithms.
-The output of shortest path for Floyd Marshall method will take at least 10 mins to get result so be patient lol. But you got the result from Dijkstra Algorithm real quick.
+The output of shortest path for Floyd Marshall method takes a longer time to output the result due to the high run time. Although, Djikstra's algorthm is able to outout the results fairly quickly. 
