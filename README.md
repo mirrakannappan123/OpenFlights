@@ -13,7 +13,7 @@ Here is our presentation video: https://youtu.be/uBApWAYBcTI
 
 To achieve this goal we implemented the Floyd-Warshall Algorithm, the Dijkstra Alogrithm, iterative deepening DFS, and DFS to traverse and output the data.
 
-## Usage(Running our code)
+## Running the Tests
 For the test cases, execute the following command: 
 
     $ make tests
@@ -23,9 +23,9 @@ For the test cases, execute the following command:
 
 ## Organization 
 ### Graph.h and Graph.cpp
-This file assists in creating the weighted and directed graph used in main.cpp and in our algorithms. This file also contains our iterative DFS, DFS, and Djistraka Algorithm. 
+This file assists in creating the weighted and directed graph used in main.cpp and in our algorithms. This file also contains our iterative deepening DFS(IDDFS), DFS, and Dijkstra Algorithm. 
 
-The Djstrka Algorithm outputs the shortest path and the distance it from the source to the destination. While DFS prints which node it traversed through in the DFS.output.txt file. 
+The Dijkstra Algorithm outputs the shortest path and the distance it from the source to the destination. While DFS prints which node it traversed through in the dfs_output.txt file and IDDFS prints which node it traversed through in the iddfs_output.txt file. 
 
 ### Floyd.h and Floyd.cpp
 This file is dedicated to implementing the Floyd-Warshall algorithm. To Note: the run time for the algorithm is O(N^3) so it takes a really long time to output the path. This algorithm outputs a vector of airport ID's which ultimately is the shortest path. 
@@ -39,10 +39,11 @@ This file calulates the distance given the latitutde and longitude.
 ### main.cpp
 This file is main executable file that will allow the user to input the two airport ID's to find the shortest path. 
 
-## Usage(Running our code)
+## Usage (Running our code)
 For running the program, execute the following command: 
 
     $ make exec
     $ ./bin/exec - runs main.cpp
     
 You will be prompted to enter the source Airport ID and the Destination Airport ID which will run the algorithms.
+The output of shortest path for Floyd Marshall method takes a longer time to output the result due to the high run time. Although, Djikstra's algorthm is able to outout the results fairly quickly. 

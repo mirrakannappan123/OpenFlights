@@ -7,6 +7,7 @@ matrix and updating them as you go */
 Floyd::Floyd(Graph g) {
     double inf = 1e9;
     std::vector<Vertex> ver = g.getVertices();
+<<<<<<< HEAD
     
     distance.resize(ver.size()); 
     path.resize(ver.size());
@@ -18,6 +19,12 @@ Floyd::Floyd(Graph g) {
             path[i][j] = "not valid";
         }
     }
+=======
+    // std::cout<<ver.size()<<std::endl;
+
+    distance = vector<vector<double>>(ver.size(), vector<double>(ver.size(), inf));
+    path = vector<vector<std::string>>(ver.size(), vector<std::string>(ver.size(), "-1"));
+>>>>>>> origin
 
     for(size_t i = 0; i < ver.size(); i++) {
         //map that has vertex as the key and value as the index to keep track of ver[i]
@@ -29,6 +36,10 @@ Floyd::Floyd(Graph g) {
              }
          }
         for(size_t k = 0; k < ver.size(); k++) {
+<<<<<<< HEAD
+=======
+            // std::cout<<ver[i] << " " << ver[k]<<std::endl;
+>>>>>>> origin
             if (g.assertEdgeExists(ver[i], ver[k], " ")) {
                 distance[i][k] = g.getEdgeWeight(ver[i], ver[k]);
                 path[i][k] = ver[k];
