@@ -1,72 +1,81 @@
-#pragma once 
-#include <iostream>
-#include <fstream>
+#pragma once
 #include <list>
-#include <vector>
+#include <utility>
+#include <algorithm>
 #include <string>
+#include <cstdlib>
+#include <climits>
+#include <fstream>
+#include <iostream>
+#include <iomanip>
 #include <sstream>
+#include <vector>
+#include "edge.h"
+#include <unordered_map>
 #include <map>
+#include <set>
+#include<cmath>
+#include<queue>
+#include<stack>
+#include <bits/stdc++.h>  
+using namespace std;  
+#define INF double(0x3f3f3f3f) // The distance to other vertices is initialized as infinite  
 using namespace std;
-struct Node
+// diPair ==> double int Pair  
+typedef pair<double, int> diPair;
+struct Path
 {
-    int val, dist;
-    // Node* next;
+    vector<Vertex> path_;
+    long double dist_;
 };
- 
-// Data structure to store a graph edge
-struct Edge {
-    int src, dest, weight;
-};
-
 class Graph {
-    public:
-    std::map<std::string, std::vector<std::string>> parse(const string& filename);
-    std::map<string, std::vector<std::pair<std::string, long double>>> routes(string filename, string filename1);
-    string test();
-    Graph() = default;
+    public: 
+        Graph() = default;
+        Graph(bool weighted); 
+        Graph(bool weighted, bool directed);
+        Graph(bool weighted, bool directed, map<string,vector<pair<string, long double>>> map, int total_Airlines);
+        vector<Vertex> getAdjacent(Vertex source) const;
+        vector<Vertex> getVertices() const;
+        Edge getEdge(Vertex source, Vertex destination) const;
+        vector<Edge> getEdges() const;
+        //Edge setEdgeLabel(Vertex source, Vertex destination, string label);
+        //string getEdgeLabel(Vertex source, Vertex destination);
+        double getEdgeWeight(Vertex source, Vertex destination) const;
+        void insertVertex(Vertex v);
+        void insertEdge(Vertex source, Vertex destination);
+        void setEdgeWeight(Vertex source, Vertex destination, double weight);
+        bool assertEdgeExists(Vertex source, Vertex destination, string functionName) const;
+        bool assertVertexExists(Vertex v, string functionName) const;
+        void error(string message) const;
 
-    long double toRadians(const long double ree);
-    long double distance(long double lat1, long double long1, long double lat2, long double long2);
 
-    private:
+        void print() const;
+        void printPath(Path input) const;
+    
+        std::unordered_map<Vertex, std::unordered_map<Vertex, Edge>> getAdjList();
+        void addEdge(int u, int v, double w); // add edges in the graph  
+    
+        std::vector<Vertex> dfs();
+        std::vector<Vertex> dfs(Vertex src_airport);
+        void printDFS();
+        // vector<Vertex> FindShortestPath(Graph& input) const;
+        std::vector<Vertex> IDDFS(Vertex src, Vertex target, int max_depth);
+        bool DLS(Vertex src, Vertex target, int limit);
+        void printIDDFS();
 
-    std::map<std::string, std::vector<std::pair<std::string, unsigned>>> map;
+        Path dijkstraShortestPath(Vertex start_airport, Vertex dest_airport);
+        // void dijkstraShortestPathh(Vertex start_airport, Vertex dest_airport);
+    private: 
+    
+        mutable std::unordered_map<Vertex, std::unordered_map<Vertex, Edge>> adjacency_list;
 
+        bool weight;
+        bool direct;
+        list<pair<int,  double>>* adj; // the list of pair to store vertex and its weight for Dijak
+        map<Vertex, int> VtIforDij; // convert string vertex of airline ID to sequential integer num
+        map<int, Vertex> ItVforDij; // convert sequential integer num to vertex of airline ID
+        std::vector<Vertex> path; // for dfs and IDDFS
+        std::set<Vertex> visited; // for dfs and IDDFS
+    
 };
-
-
-// struct Node
-// {
-//     int val, cost;
-//     Node* next;
-// };
- 
-// // Data structure to store a graph edge
-// struct Edge {
-//     int src, dest, weight;
-// };
- 
-// class Graph
-// {
-//     // Function to allocate a new node for the adjacency list
-//     Node* getAdjListNode(int value, int weight, Node* head);
-   
- 
-//     int N;    // total number of nodes in the graph
- 
-//     public:
-    
-//         // An array of pointers to Node to represent the
-//         // adjacency list
-//         Node **head;
-    
-//         // Constructor
-//         Graph(Edge edges[], int n, int N);
-        
-    
-//         // Destructor
-//         ~Graph();
-
-    
-// };
-// void printList(Node* ptr, int i);
+//
